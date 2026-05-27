@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { parseCookies, setCookie } from "nookies";
 import Select from "react-select";
 import type { SingleValue } from "react-select";
@@ -59,6 +59,13 @@ const LanguageSwitcher = () => {
   );
   const languageConfig = getLanguageConfig();
 
+  useEffect(() => {
+    if (!currentLanguage) return;
+
+    document.documentElement.dataset.language = currentLanguage;
+    document.documentElement.lang = currentLanguage;
+  }, [currentLanguage]);
+
   if (!currentLanguage || !languageConfig) {
     return null;
   }
@@ -79,6 +86,8 @@ const LanguageSwitcher = () => {
   const handleChange = (selected: SingleValue<LanguageOption>) => {
     if (!selected) return;
     setCurrentLanguage(selected.value);
+    document.documentElement.dataset.language = selected.value;
+    document.documentElement.lang = selected.value;
     setCookie(null, COOKIE_NAME, `/auto/${selected.value}`);
     window.location.reload();
   };

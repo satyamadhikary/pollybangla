@@ -57,7 +57,7 @@ export default function Navbar() {
           ].map((item) => (
             <button
               key={item}
-              className="font-medium relative group"
+              className="font-medium relative group capitalize"
               style={{ color: "#234224" }}
             >
               {item}

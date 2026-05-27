@@ -1,17 +1,17 @@
 export default function Testimonials() {
   const data = [
     {
-      name: "করিমা বেগম",
+      name: "অর্ণব সেনগুপ্ত",
       role: "কারিগর",
       text: "সমবায়ের মাধ্যমে আমরা আমাদের পণ্যের সঠিক মূল্য পাচ্ছি।",
     },
     {
-      name: "মোঃ আলমগীর",
+      name: "শ্রাবণী রায়",
       role: "কৃষক",
       text: "এখন গ্রামের পণ্য শহরে সহজেই পৌঁছাচ্ছে।",
     },
     {
-      name: "মোসাঃ হাসিনা",
+      name: "দেবজ্যোতি বসু",
       role: "উদ্যোক্তা",
       text: "এই উদ্যোগ গ্রামের মানুষের জীবন পরিবর্তন করছে।",
     },
@@ -21,7 +21,7 @@ export default function Testimonials() {
     <section className="py-16 px-4">
       <div className="max-w-7xl mx-auto">
         <h2
-          className="text-center text-4xl font-bold mb-12"
+          className="text-center text-4xl font-bold mb-12 capitalize"
           style={{ color: "#264225" }}
         >
           আমাদের সদস্যদের কথা

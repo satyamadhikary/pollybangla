@@ -100,6 +100,13 @@ body {
   font-family: 'Noto Sans', serif;
 }
 
+html[data-language="en"] body,
+html[lang="en"] body,
+html[data-language="en"] body :not(.notranslate):not(.notranslate *),
+html[lang="en"] body :not(.notranslate):not(.notranslate *) {
+  font-family: var(--font-roboto), Arial, Helvetica, sans-serif !important;
+}
+
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);

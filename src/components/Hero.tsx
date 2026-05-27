@@ -27,7 +27,7 @@ export default function Hero() {
       <div className="relative z-10 h-full max-w-7xl mx-auto px-4 lg:px-8 flex flex-col justify-center">
         <div className="max-w-xl">
           <h1
-            className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight"
+            className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight capitalize"
             style={{ color: "#234224" }}
           >
             আমাদের ঐতিহ্য

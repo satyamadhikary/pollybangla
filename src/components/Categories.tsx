@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, LucideIndianRupee } from "lucide-react";
 
 import {
   Carousel,
@@ -45,42 +45,42 @@ const productsData: Record<
     {
       id: 1,
       name: "প্রিমিয়াম নাজিরশাইল চাল প্রিমিয়াম নাজিরশাইল চাল",
-      price: "৳৮৫",
+      price: "৮৫",
       weight: "১ কেজি",
       img: "/hero.png",
     },
     {
       id: 2,
       name: "মিনিকেট চাল (নতুন)",
-      price: "৳৭২",
+      price: "৭২",
       weight: "১ কেজি",
       img: "/hero.png",
     },
     {
       id: 3,
       name: "সুগন্ধি চিনিগুঁড়া চাল",
-      price: "৳১৫০",
+      price: "১৫০",
       weight: "১ কেজি",
       img: "/hero.png",
     },
     {
       id: 4,
       name: "বালাম চাল",
-      price: "৳৭৮",
+      price: "৭৮",
       weight: "১ কেজি",
       img: "/hero.png",
     },
     {
       id: 5,
       name: "প্রিমিয়াম নাজিরশাইল চাল",
-      price: "৳৮৫",
+      price: "৮৫",
       weight: "১ কেজি",
       img: "/hero.png",
     },
     {
       id: 6,
       name: "মিনিকেট চাল (নতুন)",
-      price: "৳৭২",
+      price: "৭২",
       weight: "১ কেজি",
       img: "/hero.png",
     },
@@ -89,14 +89,14 @@ const productsData: Record<
     {
       id: 7,
       name: "পিতলের ঐতিহ্যবাহী কলসি",
-      price: "৳২,৫০০",
+      price: "২,৫০০",
       weight: "১ টি",
       img: "/category2.jpg",
     },
     {
       id: 8,
       name: "তামার পানির পাত্র",
-      price: "৳১,৮০০",
+      price: "১,৮০০",
       weight: "১ টি",
       img: "/category2.jpg",
     },
@@ -105,7 +105,7 @@ const productsData: Record<
     {
       id: 9,
       name: "নকশী কাঁথা",
-      price: "৳৩,৫০০",
+      price: "৩,৫০০",
       weight: "১ টি",
       img: "/category3.jpg",
     },
@@ -114,7 +114,7 @@ const productsData: Record<
     {
       id: 10,
       name: "সুন্দরবনের খাঁটি মধু",
-      price: "৳৮৫০",
+      price: "৮৫০",
       weight: "১ কেজি",
       img: "/category4.jpg",
     },
@@ -123,7 +123,7 @@ const productsData: Record<
     {
       id: 11,
       name: "তাঁতের সুতি শাড়ি",
-      price: "৳১,৮০০",
+      price: "১,৮০০",
       weight: "১ টি",
       img: "/category5.jpg",
     },
@@ -132,7 +132,7 @@ const productsData: Record<
     {
       id: 12,
       name: "খাঁটি গুড়া হলুদ",
-      price: "৳১২০",
+      price: "১২০",
       weight: "২৫০ গ্রাম",
       img: "/category6.jpg",
     },
@@ -152,6 +152,8 @@ export default function Categories() {
   const [showRightProducts, setShowRightProducts] = useState(true);
 
   const currentProducts = productsData[activeTab] || [];
+
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
 
   useEffect(() => {
     if (!tabApi) return;
@@ -197,7 +199,7 @@ export default function Categories() {
       <div className="max-w-7xl mx-auto">
         {/* HEADER */}
         <div className="flex items-center justify-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#264225]">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#264225] capitalize">
             জনপ্রিয় বিভাগসমূহ
           </h2>
         </div>
@@ -256,6 +258,7 @@ export default function Categories() {
                   ease-out
                   will-change-transform
                   active:scale-[0.98]
+                  cursor-pointer
                   ${
                     isActive
                       ? "bg-[#264225] text-white border-[#264225]"
@@ -340,43 +343,103 @@ export default function Categories() {
               className="w-full"
             >
               <CarouselContent className="-ml-5">
-                {currentProducts.map((product) => (
-                  <CarouselItem
-                    key={product.id}
-                    className="pl-5 basis-[85%] sm:basis-[50%] md:basis-[40%] lg:basis-[28%]"
-                  >
-                    <div className="bg-white rounded-[24px] border border-gray-100 p-4 shadow-sm hover:shadow-md transition-all duration-300 h-full flex flex-col justify-between">
-                      <div>
-                        <div className="w-full h-55 relative overflow-hidden rounded-[18px] bg-gray-50 mb-4">
-                          <Image
-                            src={product.img}
-                            alt={product.name}
-                            fill
-                            className="object-cover hover:scale-105 transition-transform duration-500"
-                          />
+                {currentProducts.map((product) => {
+                  const handleWhatsAppOrder = () => {
+                    const phone = whatsappNumber;
+
+                    const message = `আমি এই প্রোডাক্টটি অর্ডার করতে চাই।
+
+                        প্রোডাক্ট: ${product.name}
+                        দাম: ₹${product.price}
+                        পরিমাণ: ${product.weight}`;
+
+                    const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(
+                      message,
+                    )}`;
+
+                    window.open(whatsappUrl, "_blank");
+                  };
+
+                  return (
+                    <CarouselItem
+                      key={product.id}
+                      className="pl-5 basis-[85%] sm:basis-[50%] md:basis-[40%] lg:basis-[28%]"
+                    >
+                      <div
+                        onClick={handleWhatsAppOrder}
+                        className="
+          group
+          bg-white
+          rounded-[24px]
+          border
+          border-gray-100
+          p-4
+          shadow-sm
+          hover:shadow-xl
+          hover:-translate-y-1
+          transition-all
+          duration-300
+          h-full
+          flex
+          flex-col
+          justify-between
+          cursor-pointer
+          active:scale-[0.98]
+          select-none
+        "
+                      >
+                        <div>
+                          <div className="w-full h-55 relative overflow-hidden rounded-[18px] bg-gray-50 mb-4">
+                            <Image
+                              src={product.img}
+                              alt={product.name}
+                              fill
+                              className="
+                object-cover
+                transition-transform
+                duration-500
+                group-hover:scale-105
+              "
+                            />
+                          </div>
+
+                          <h3 className="text-xl font-semibold text-gray-800 line-clamp-2 mb-4">
+                            {product.name}
+                          </h3>
+
+                          <p className="text-sm text-gray-500 mb-4">
+                            {product.weight}
+                          </p>
                         </div>
 
-                        <h3 className="text-xl font-semibold text-gray-800 line-clamp-2 mb-4">
-                          {product.name}
-                        </h3>
+                        <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                          <span className="text-2xl font-bold text-[#264225] flex items-center gap-px">
+                            <LucideIndianRupee className="h-5 w-5 font-extrabold" />
+                            {product.price}
+                          </span>
 
-                        <p className="text-sm text-gray-500 mb-4">
-                          {product.weight}
-                        </p>
+                          <div
+                            className="
+              bg-[#264225]/90
+              group-hover:bg-[#264225]
+              text-white
+              group-hover:text-white
+              transition-all
+              duration-300
+              px-4
+              py-2
+              rounded-xl
+              text-sm
+              font-medium
+            "
+                          >
+                            অর্ডার করুন
+                          </div>
+                        </div>
                       </div>
-
-                      <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-                        <span className="text-2xl font-bold text-[#264225]">
-                          {product.price}
-                        </span>
-
-                        <button className="bg-[#264225]/10 hover:bg-[#264225] text-[#264225] hover:text-white transition-all duration-300 px-4 py-2 rounded-xl text-sm font-medium">
-                          কার্টে যোগ করুন
-                        </button>
-                      </div>
-                    </div>
-                  </CarouselItem>
-                ))}
+                    </CarouselItem>
+                  );
+                })}
               </CarouselContent>
             </Carousel>
           </div>
