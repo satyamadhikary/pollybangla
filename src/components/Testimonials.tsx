@@ -31,7 +31,7 @@ export default function Testimonials() {
           {data.map((item) => (
             <div
               key={item.name}
-              className="rounded-[30px] border p-8"
+              className="rounded-[30px] border-3 border-[#efe2cb]/50! p-8"
               style={{
                 background: "#fcf7ee",
                 borderColor: "#dccfb9",
