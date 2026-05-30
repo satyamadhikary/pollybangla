@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Menu } from "lucide-react";
 import { useEffect, useState } from "react";
+import { navItems } from "@/data/navdata";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -47,29 +48,32 @@ export default function Navbar() {
 
         {/* DESKTOP MENU */}
         <div className="hidden lg:flex items-center gap-8">
-          {[
-            "হোম",
-            "আমাদের সম্পর্কে",
-            "পণ্যসমূহ",
-            "সমবায় গঠন",
-            "প্রশিক্ষণ",
-            "যোগাযোগ",
-          ].map((item) => (
-            <button
-              key={item}
+          {navItems.map((item) => (
+            <a
+              key={item.label}
+              href={item.href}
               className="font-medium relative group capitalize"
               style={{ color: "#234224" }}
             >
-              {item}
+              {item.label}
 
               <span
-                className="absolute left-0 -bottom-1 h-[2px] w-0 group-hover:w-full transition-all duration-300"
+                className="
+          absolute
+          left-0
+          -bottom-1
+          h-[2px]
+          w-0
+          group-hover:w-full
+          transition-all
+          duration-300
+        "
                 style={{ background: "#234224" }}
               />
-            </button>
+            </a>
           ))}
         </div>
-        
+
         {/* MOBILE MENU BUTTON */}
         <button className="lg:hidden" onClick={() => setOpen(!open)}>
           <Menu color="#234224" />
@@ -83,21 +87,16 @@ export default function Navbar() {
         }`}
       >
         <div className="px-4 flex flex-col gap-5 pb-5">
-          {[
-            "হোম",
-            "আমাদের সম্পর্কে",
-            "পণ্যসমূহ",
-            "সমবায় গঠন",
-            "প্রশিক্ষণ",
-            "যোগাযোগ",
-          ].map((item) => (
-            <button
-              key={item}
+          {navItems.map((item) => (
+            <a
+              key={item.label}
+              href={item.href}
+              onClick={() => setOpen(false)}
               className="text-left font-medium"
               style={{ color: "#234224" }}
             >
-              {item}
-            </button>
+              {item.label}
+            </a>
           ))}
         </div>
       </div>

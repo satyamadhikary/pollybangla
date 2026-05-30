@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden mt-[87px] h-[calc(100vh-87px)]">
+    <section className="relative overflow-hidden mt-21.75 h-[calc(100dvh-87px)]">
       {/* BACKGROUND IMAGE */}
       <Image
         src="/hero.png"
@@ -17,7 +17,7 @@ export default function Hero() {
         alt="hero"
         fill
         priority
-        className="object-cover h-full w-full md:hidden"
+    className="object-cover h-full w-full md:hidden block"
       />
 
       {/* DARK OVERLAY */}
@@ -44,11 +44,13 @@ export default function Hero() {
           </p>
 
           {/* GLASS BUTTON */}
+          <a href="#categories">
           <button
-            className="mt-6 px-8 py-4 rounded-xl text-white font-semibold border border-white/20 backdrop-blur-xs transition-all duration-300 cursor-pointer bg-[rgba(35,66,36,0.85)] hover:bg-[rgba(35,66,36,1)] shadow-lg"
+            className="mt-6 px-12 py-3.5 rounded-xl text-white font-semibold border border-white/20 backdrop-blur-xs transition-all duration-300 cursor-pointer bg-[rgba(35,66,36,0.85)] hover:bg-[rgba(35,66,36,1)] shadow-lg"
           >
             এখনই শুরু করুন
           </button>
+          </a>
         </div>
 
         {/* BOTTOM GLASS BOX */}

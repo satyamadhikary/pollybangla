@@ -21,6 +21,8 @@ interface LanguageOption {
   label: string;
 }
 
+const INDIA_FLAG = "\uD83C\uDDEE\uD83C\uDDF3";
+
 declare global {
   interface Window {
     __GOOGLE_TRANSLATION_CONFIG__?: TranslationConfig;
@@ -98,6 +100,12 @@ const LanguageSwitcher = () => {
         options={selectOptions}
         value={selectedOption}
         onChange={handleChange}
+        formatOptionLabel={(option: LanguageOption) => (
+          <span className="flex items-center gap-2">
+            <span aria-hidden="true">{INDIA_FLAG}</span>
+            <span>{option.label}</span>
+          </span>
+        )}
         className="text-left cursor-pointer"
         classNamePrefix="react-select"
         isSearchable={false}

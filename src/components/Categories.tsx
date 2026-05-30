@@ -155,7 +155,10 @@ export default function Categories() {
 
   return (
     <>
-      <section className="py-16 px-4 bg-[#FAF9F5] overflow-hidden">
+      <section
+        className="py-16 px-4 bg-[#FAF9F5] overflow-hidden"
+        id="categories"
+      >
         <div className="max-w-7xl mx-auto">
           {/* HEADER */}
           <div className="flex items-center justify-center mb-10">
@@ -390,7 +393,7 @@ export default function Categories() {
                             onClick={() =>
                               setExpandedDescription(!expandedDescription)
                             }
-                            className="ml-2 text-[#264225] font-semibold hover:underline"
+                            className="ml-2 text-[#264225] font-semibold hover:underline cursor-pointer"
                           >
                             {expandedDescription
                               ? "Read Less"
@@ -405,7 +408,7 @@ export default function Categories() {
                   <div className="fixed md:absolute bottom-0 left-0 z-50 w-full p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] md:p-6 bg-[#faf9f5] border-t border-gray-200">
                     <button
                       onClick={() => handleWhatsAppOrder(selectedProduct)}
-                      className="w-full bg-[#264225] hover:bg-[#1d341c] text-white py-4 rounded-2xl text-lg font-semibold transition-all duration-300"
+                      className="w-full bg-[#264225] hover:bg-[#1d341c] text-white py-4 rounded-2xl text-lg font-semibold transition-all duration-300 cursor-pointer"
                     >
                       WhatsApp-এ অর্ডার করুন
                     </button>

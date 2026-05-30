@@ -15,11 +15,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="bn" data-language="bn" className={roboto.variable}>
-      <head />
-      <body>
-        {children}
-
+    <html
+      lang="bn"
+      data-language="bn"
+      className={roboto.variable}
+      suppressHydrationWarning
+    >
+      <head>
         <Script id="active-language" strategy="beforeInteractive">
           {`
             (function () {
@@ -52,6 +54,15 @@ export default function RootLayout({
         </Script>
         <Script id="gtranslate-settings" strategy="beforeInteractive">
           {`
+            window.__GOOGLE_TRANSLATION_CONFIG__ = {
+              defaultLanguage: "bn",
+              languages: [
+                { name: "bn", title: "Bangla" },
+                { name: "en", title: "English" },
+                { name: "hi", title: "Hindi" }
+              ]
+            };
+
             window.gtranslateSettings = {
               default_language: "bn",
               languages: ["bn", "en", "hi"],
@@ -61,6 +72,10 @@ export default function RootLayout({
             };
           `}
         </Script>
+      </head>
+      <body>
+        {children}
+
         <Script
           src="https://cdn.gtranslate.net/widgets/latest/dwf.js"
           strategy="afterInteractive"

@@ -13,16 +13,15 @@ const features = [
 
 export default function WhyChoose() {
   return (
-    <section className="py-20 px-4 bg-[#f7f3eb] overflow-hidden">
+    <section className="py-20 px-4 bg-[#f7f3eb] overflow-hidden" id="why-us">
       <div className="max-w-7xl mx-auto relative">
         {/* Decorative Blur */}
         <div className="absolute -top-10 -left-10 w-40 h-40 bg-green-200/30 blur-3xl rounded-full" />
         <div className="absolute bottom-0 right-0 w-52 h-52 bg-yellow-200/30 blur-3xl rounded-full" />
 
         <div className="relative grid lg:grid-cols-2 rounded-[40px] overflow-hidden bg-[#efe2cb]/90 backdrop-blur-xl shadow-[0_20px_60px_rgba(0,0,0,0.08)] border-8 border-white/40">
-          
           {/* LEFT IMAGE */}
-          <div className="relative group min-h-[300px] md:min-h-[350px] lg:min-h-full overflow-hidden">
+          <div className="relative group min-h-75 md:min-h-87.5 lg:min-h-full overflow-hidden">
             <Image
               src="/whychooseus.png"
               alt="products"
@@ -37,7 +36,7 @@ export default function WhyChoose() {
             />
 
             {/* Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-t from-black/40 via-black/10 to-transparent" />
 
             {/* Floating Badge */}
             <div className="absolute bottom-6 left-6 bg-white/90 backdrop-blur-md rounded-2xl px-5 py-3 shadow-lg">
@@ -48,7 +47,7 @@ export default function WhyChoose() {
           </div>
 
           {/* RIGHT CONTENT */}
-          <div className="relative p-8 sm:p-12 lg:p-16 flex flex-col justify-center">
+          <div className="relative py-8 px-5 sm:p-12 lg:p-16 flex flex-col justify-center">
             {/* Small Label */}
             <span className="w-fit mb-5 px-4 py-2 rounded-full bg-[#264225]/10 text-[#264225] text-sm font-semibold tracking-wide">
               কেন আমাদের বেছে নেবেন
@@ -61,19 +60,19 @@ export default function WhyChoose() {
 
             {/* Description */}
             <p className="mt-5 text-[#5b5b4f] text-lg leading-relaxed max-w-xl">
-              আমরা গ্রামের কৃষক ও কারিগরদের কাছ থেকে সরাসরি
-              প্রাকৃতিক ও ঐতিহ্যবাহী পণ্য সংগ্রহ করি যাতে আপনি
-              পান সর্বোচ্চ মানের বিশুদ্ধতা ও বিশ্বাস।
+              আমরা গ্রামের কৃষক ও কারিগরদের কাছ থেকে সরাসরি প্রাকৃতিক ও
+              ঐতিহ্যবাহী পণ্য সংগ্রহ করি যাতে আপনি পান সর্বোচ্চ মানের বিশুদ্ধতা
+              ও বিশ্বাস।
             </p>
 
             {/* FEATURES */}
-            <div className="mt-10 space-y-1">
+            <div className="md:mt-10 mt-6 space-y-1">
               {features.map((item, index) => (
                 <div
                   key={index}
-                  className="group flex items-center gap-4 p-4 rounded-2xl hover:bg-white/60 transition-all duration-300 hover:translate-x-1"
+                  className="group flex items-center gap-4 md:p-4 px-0 py-4 rounded-2xl md:hover:bg-white/60 transition-all duration-300 md:hover:translate-x-1"
                 >
-                  <div className="min-w-[48px] h-12 rounded-2xl bg-[#264225] flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300">
+                  <div className="min-w-12 h-12 rounded-2xl bg-[#264225] flex items-center justify-center shadow-md md:group-hover:scale-110 transition-transform duration-300">
                     <Check className="text-white w-5 h-5" />
                   </div>
 

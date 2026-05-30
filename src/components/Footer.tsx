@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { LanguageSwitcher } from "./language-switcher";
+import { navItems } from "@/data/navdata";
 
 export default function Footer() {
   return (
@@ -15,8 +17,7 @@ export default function Footer() {
                 className="object-contain"
               />
               <h2 className="text-3xl font-bold leading-tight capitalize">
-                পল্লী বাংলার
-                ঐতিহ্য সম্ভার
+                পল্লী বাংলার ঐতিহ্য সম্ভার
               </h2>
             </div>
 
@@ -27,18 +28,23 @@ export default function Footer() {
 
           <div className="col-span-2 flex md:flex-row flex-col justify-end md:gap-20 gap-10">
             <div>
-              <h3 className="text-2xl font-semibold mb-5 capitalize">দ্রুত লিংক</h3>
+              <h3 className="text-2xl font-semibold mb-5 capitalize">
+                দ্রুত লিংক
+              </h3>
 
               <div className="flex flex-col gap-3 text-gray-300">
-                <button className="text-left">হোম</button>
-                <button className="text-left">আমাদের সম্পর্কে</button>
-                <button className="text-left">পণ্যসমূহ</button>
-                <button className="text-left">যোগাযোগ</button>
+                {navItems.map((item, index) => (
+                  <a key={index} href={item.href} className="text-left">
+                    {item.label}
+                  </a>
+                ))}
               </div>
             </div>
 
             <div>
-              <h3 className="text-2xl font-semibold mb-5 capitalize">যোগাযোগ</h3>
+              <h3 className="text-2xl font-semibold mb-5 capitalize">
+                যোগাযোগ
+              </h3>
 
               <div className="space-y-4 text-gray-300">
                 <p>কলকাতা, পশ্চিমবঙ্গ</p>
@@ -51,7 +57,7 @@ export default function Footer() {
               <h3 className="text-2xl font-semibold mb-5 capitalize">ভাষা</h3>
 
               <div className="space-y-4 text-gray-300">
-                <div className="gtranslate_wrapper"></div>
+                <LanguageSwitcher />
               </div>
             </div>
           </div>
