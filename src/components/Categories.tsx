@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight, LucideIndianRupee } from "lucide-react";
+import { ChevronLeft, ChevronRight, LucideIndianRupee, X } from "lucide-react";
 
 import {
   Carousel,
@@ -161,10 +161,33 @@ export default function Categories() {
       >
         <div className="max-w-7xl mx-auto">
           {/* HEADER */}
-          <div className="flex items-center justify-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#264225] capitalize">
+          <div className="text-center mb-14">
+            <div
+              className="
+      inline-flex
+      items-center
+      px-4
+      py-2
+      rounded-full
+      text-sm
+      font-medium
+      mb-4
+    "
+              style={{
+                background: "#efe5d1",
+                color: "#264225",
+              }}
+            >
+              বাংলার ঐতিহ্যবাহী সংগ্রহ
+            </div>
+
+            <h2 className="text-4xl md:text-5xl font-bold text-[#264225] capitalize">
               জনপ্রিয় বিভাগসমূহ
             </h2>
+
+            <p className="mt-4 max-w-2xl mx-auto text-gray-600 text-lg">
+              গ্রামীণ শিল্প, কৃষিপণ্য ও হস্তশিল্পের সেরা সংগ্রহ এক জায়গায়।
+            </p>
           </div>
 
           {/* CATEGORY ROW */}
@@ -268,35 +291,90 @@ export default function Categories() {
                     >
                       <div
                         onClick={() => setSelectedProduct(product)}
-                        className="group bg-white rounded-[24px] border border-gray-100 p-4 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 h-full flex flex-col justify-between cursor-pointer"
+                        className="
+    group
+    bg-white
+    rounded-[32px]
+    overflow-hidden
+    border
+    border-[#ece4d4]
+    group
+    transition-all
+    duration-500
+    cursor-pointer
+    h-full
+  "
                       >
-                        <div>
-                          <div className="w-full h-56 relative overflow-hidden rounded-[18px] bg-gray-50 mb-4">
-                            <Image
-                              src={product.img}
-                              alt={product.name}
-                              fill
-                              className="object-cover transition-transform duration-500 group-hover:scale-105"
-                            />
-                          </div>
+                        <div className="relative h-64 overflow-hidden">
+                          <Image
+                            src={product.img}
+                            alt={product.name}
+                            fill
+                            className="
+        object-cover
+        transition-transform
+        duration-700
+        group-hover:scale-110
+      "
+                          />
 
-                          <h3 className="text-xl font-semibold text-gray-800 line-clamp-2 mb-3">
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+
+                          <div
+                            className="
+        absolute
+        top-4
+        left-4
+        px-3
+        py-1
+        rounded-full
+        bg-white/90
+        text-[#264225]
+        backdrop-blur-md
+        text-xs
+        font-semibold
+      "
+                          >
+                            হেরিটেজ কালেকশন
+                          </div>
+                        </div>
+
+                        <div className="p-5">
+                          <h3 className="text-xl font-bold text-[#264225] line-clamp-2">
                             {product.name}
                           </h3>
 
-                          <p className="text-sm text-gray-500 mb-4">
+                          <p className="mt-2 text-sm text-gray-500">
                             {product.quantity}
                           </p>
-                        </div>
 
-                        <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-                          <span className="text-2xl font-bold text-[#264225] flex items-center gap-px">
-                            <LucideIndianRupee className="h-5 w-5" />
-                            {product.price}
-                          </span>
+                          <div className="mt-5 flex items-center justify-between">
+                            <div>
+                              <p className="text-xs text-gray-500">মূল্য</p>
 
-                          <div className="bg-[#264225] text-white px-4 py-2 rounded-xl text-sm font-medium">
-                            বিস্তারিত দেখুন
+                              <div className="flex items-center text-2xl font-bold text-[#264225]">
+                                <LucideIndianRupee className="h-5 w-5" />
+                                {product.price}
+                              </div>
+                            </div>
+
+                            <div
+                              className="
+          px-4
+          py-2
+          rounded-xl
+          bg-[#264225]
+          text-white
+          text-sm
+          font-medium
+          group-hover:bg-[#355f35]
+          group-hover:scale-[1.05]
+          transition-all
+          duration-500
+        "
+                            >
+                              বিস্তারিত
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -334,7 +412,19 @@ export default function Categories() {
           }
         }}
       >
-        <DialogContent className="max-w-6xl! w-full p-0 overflow-hidden border-0 rounded-none md:rounded-[32px] h-screen md:h-[90vh] bg-white">
+        <DialogContent
+          className="max-w-6xl! w-full p-0 overflow-hidden border-0 rounded-none md:rounded-xl h-screen md:h-[90vh] bg-[#faf7f1]"
+          showCloseButton={false}
+        >
+          <button
+            onClick={() => {
+              setSelectedProduct(null);
+              setExpandedDescription(false);
+            }}
+            className="absolute top-3 right-3 z-100 h-8 w-8 rounded-xl bg-white/90 backdrop-blur shadow-sm border border-gray-200 flex items-center justify-center text-[#264225] hover:scale-105 transition-all duration-300 cursor-pointer hover:bg-[#264225] hover:text-white">
+            <X className="h-4 w-4" />
+          </button>
+
           {selectedProduct && (
             <>
               <DialogTitle className="sr-only">
@@ -356,11 +446,10 @@ export default function Categories() {
 
                   {/* FLOATING PRICE */}
                   <div className="absolute bottom-5 left-5 bg-white/90 backdrop-blur-md px-5 py-3 rounded-2xl shadow-xl border border-white/40">
-                    <p className="text-sm text-gray-500 mb-1">মূল্য</p>
+                    <p className="text-xs text-gray-500 mb-1">বিভাগ</p>
 
-                    <div className="flex items-center text-[#264225] font-bold text-3xl">
-                      <LucideIndianRupee className="h-6 w-6" />
-                      {selectedProduct.price}
+                    <div className="flex items-center text-[#264225] font-bold text-xl">
+                      {activeTab}
                     </div>
                   </div>
                 </div>
@@ -370,12 +459,52 @@ export default function Categories() {
                   {/* SCROLLABLE CONTENT */}
                   <div className="flex-1 overflow-y-auto px-6 md:px-10 pt-8 pb-32 no-scrollbar">
                     {/* PRODUCT TITLE */}
+                    <div
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-5"
+                      style={{
+                        background: "#efe5d1",
+                        color: "#264225",
+                      }}
+                    >
+                      <span className="w-2 h-2 rounded-full bg-green-700" />
+                      জনপ্রিয় পণ্য
+                    </div>
                     <h2 className="text-3xl md:text-4xl font-bold text-[#264225] leading-tight mb-5">
                       {selectedProduct.name}
                     </h2>
+                    <div className="grid grid-cols-2 gap-4 mb-8">
+                      <div className="bg-white rounded-2xl p-4">
+                        <p className="text-sm text-gray-500 mb-1">পরিমাণ</p>
+
+                        <p className="flex items-center text-[#264225] font-bold text-3xl uppercase">
+                          {selectedProduct.quantity}
+                        </p>
+                      </div>
+
+                      <div className="bg-white rounded-2xl p-4">
+                        <p className="text-sm text-gray-500 mb-1">
+                          মূল্য
+                        </p>
+
+                        <p className="flex items-center text-[#264225] font-bold text-3xl">
+                          ₹{selectedProduct.price}
+                        </p>
+                      </div>
+                    </div>
 
                     {/* DESCRIPTION CARD */}
-                    <div className="bg-white rounded-3xl p-5 md:p-6 shadow-sm border border-gray-100">
+                    <div
+                      className="
+    bg-white
+    rounded-[28px]
+    p-6
+    border
+    shadow-sm
+  "
+                      style={{
+                        borderColor: "#ece4d4",
+                      }}
+                    >
                       <h3 className="text-lg font-semibold text-gray-800 mb-4">
                         পণ্যের বিবরণ
                       </h3>
@@ -408,7 +537,22 @@ export default function Categories() {
                   <div className="fixed md:absolute bottom-0 left-0 z-50 w-full p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] md:p-6 bg-[#faf9f5] border-t border-gray-200">
                     <button
                       onClick={() => handleWhatsAppOrder(selectedProduct)}
-                      className="w-full bg-[#264225] hover:bg-[#1d341c] text-white py-4 rounded-2xl text-lg font-semibold transition-all duration-300 cursor-pointer"
+                      className="
+  w-full
+  py-4
+  rounded-2xl
+  bg-gradient-to-r
+  from-[#264225]
+  to-[#355f35]
+  text-white
+  font-semibold
+  text-lg
+  shadow-lg
+  hover:scale-[1.02]
+  transition-all
+  duration-300
+  cursor-pointer
+"
                     >
                       WhatsApp-এ অর্ডার করুন
                     </button>
