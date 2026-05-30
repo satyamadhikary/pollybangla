@@ -413,7 +413,16 @@ export default function Categories() {
         }}
       >
         <DialogContent
-          className="max-w-6xl! w-full p-0 overflow-hidden border-0 rounded-none md:rounded-xl h-screen md:h-[90vh] bg-[#faf7f1]"
+          className="max-w-6xl!
+    w-full
+    p-0
+    border-0
+    rounded-none
+    md:rounded-xl
+    h-[100dvh]
+    md:h-[90vh]
+    bg-[#faf7f1]
+    overflow-hidden"
           showCloseButton={false}
         >
           <button
@@ -431,7 +440,7 @@ export default function Categories() {
                 {selectedProduct.name}
               </DialogTitle>
 
-              <div className="grid grid-cols-1 md:grid-cols-[1.1fr_0.9fr] md:h-full">
+              <div className="grid grid-cols-1 md:grid-cols-[1.1fr_0.9fr] h-full overflow-hidden">
                 {/* LEFT IMAGE SIDE */}
                 <div className="relative h-[320px] md:h-full overflow-hidden">
                   <Image
@@ -455,9 +464,17 @@ export default function Categories() {
                 </div>
 
                 {/* RIGHT CONTENT SIDE */}
-                <div className="relative flex flex-col bg-[#faf9f5] h-full max-h-screen md:max-h-[90vh] overflow-hidden">
+                <div className="relative flex flex-col bg-[#faf9f5] min-h-0 overflow-hidden">
                   {/* SCROLLABLE CONTENT */}
-                  <div className="flex-1 overflow-y-auto px-6 md:px-10 pt-8 pb-32 no-scrollbar">
+                  <div className=" flex-1
+    min-h-0
+    overflow-y-auto
+    overscroll-contain
+    px-6
+    md:px-10
+    pt-8
+    pb-32
+    no-scrollbar">
                     {/* PRODUCT TITLE */}
                     <div
                       className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-5"
