@@ -6,10 +6,12 @@ import WhyChoose from "@/components/WhyChoose";
 import Testimonials from "@/components/Testimonials";
 // import News from "@/components/News";
 import Footer from "@/components/Footer";
+import WelcomeOfferModal from "@/components/WelcomeOfferModal";
 
 export default function Home() {
   return (
     <main style={{ background: "#f7f1e7" }}>
+      <WelcomeOfferModal />
       <Navbar />
       <Hero />
       <Features />
