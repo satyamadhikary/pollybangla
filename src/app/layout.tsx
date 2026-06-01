@@ -1,6 +1,7 @@
 import Script from "next/script";
 import { Roboto } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -75,7 +76,7 @@ export default function RootLayout({
       </head>
       <body>
         {children}
-
+        <Analytics />
         <Script
           src="https://cdn.gtranslate.net/widgets/latest/dwf.js"
           strategy="afterInteractive"
