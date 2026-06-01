@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import {
   X,
@@ -15,11 +15,77 @@ import {
 export default function MembershipModal() {
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const membershipId = localStorage.getItem("membershipId");
+    const modalClosed = localStorage.getItem("membershipModalClosed");
+
+    if (membershipId || modalClosed === "true") {
+      setOpen(false);
+    } else {
+      setOpen(true);
+    }
+  }, []);
+
+  const handleClose = () => {
+    localStorage.setItem("membershipModalClosed", "true");
+    setOpen(false);
+  };
+
+  const validateName = (value: string) => {
+    const trimmed = value.trim();
+
+    if (!trimmed) {
+      return "পূর্ণ নাম লিখুন";
+    }
+
+    if (trimmed.length < 3) {
+      return "নামের দৈর্ঘ্য কমপক্ষে ৩ অক্ষর হতে হবে";
+    }
+
+    const nameRegex = /^[A-Za-z\u0980-\u09FF\s]+$/;
+
+    if (!nameRegex.test(trimmed)) {
+      return "শুধুমাত্র বাংলা বা ইংরেজি অক্ষর ব্যবহার করুন";
+    }
+
+    return "";
+  };
+
+  const validatePhone = (value: string) => {
+    const cleaned = value.replace(/\D/g, "");
+
+    const phone =
+      cleaned.startsWith("91") && cleaned.length === 12
+        ? cleaned.slice(2)
+        : cleaned;
+
+    if (!phone) {
+      return "ফোন নম্বর লিখুন";
+    }
+
+    if (!/^[6-9]\d{9}$/.test(phone)) {
+      return "সঠিক ১০ সংখ্যার ভারতীয় মোবাইল নম্বর দিন";
+    }
+
+    return "";
+  };
 
   const handleRegister = async () => {
     if (!fullName.trim() || !phone.trim()) return;
+    const nameValidation = validateName(fullName);
+    const phoneValidation = validatePhone(phone);
+
+    setNameError(nameValidation);
+    setPhoneError(phoneValidation);
+
+    if (nameValidation || phoneValidation) {
+      return;
+    }
 
     try {
       const res = await fetch("/api/membership", {
@@ -34,6 +100,11 @@ export default function MembershipModal() {
       });
 
       if (!res.ok) throw new Error();
+
+      const memberId = `MEM-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+
+      localStorage.setItem("membershipId", memberId);
+      localStorage.setItem("membershipModalClosed", "true");
 
       setSubmitted(true);
 
@@ -50,13 +121,22 @@ export default function MembershipModal() {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(value) => {
+        if (!value) {
+          localStorage.setItem("membershipModalClosed", "true");
+        }
+
+        setOpen(value);
+      }}
+    >
       <DialogContent
         showCloseButton={false}
         className="p-0 border-0 bg-transparent overflow-hidden max-w-4xl! w-[95vw] max-h-[92vh]! overflow-y-auto rounded-[24px]"
       >
         <button
-          onClick={() => setOpen(false)}
+          onClick={handleClose}
           className="fixed top-4 right-4 z-50 h-10 w-10 rounded-full bg-white/90 backdrop-blur-md shadow-lg border border-white flex items-center justify-center text-[#264225] hover:bg-[#264225] hover:text-white transition-all duration-300 cursor-pointer"
         >
           <X size={18} />
@@ -199,10 +279,18 @@ export default function MembershipModal() {
               <input
                 type="text"
                 value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setFullName(value);
+                  setNameError(validateName(value));
+                }}
+                onBlur={() => setNameError(validateName(fullName))}
                 placeholder="আপনার পূর্ণ নাম লিখুন"
                 className="w-full h-12 rounded-xl border border-[#dac6a7] bg-white/80 px-4 text-sm outline-none focus:border-[#2d5a27] focus:ring-4 focus:ring-[#2d5a27]/10 transition-all"
               />
+              {nameError && (
+                <p className="mt-1 text-xs text-red-600">{nameError}</p>
+              )}
             </div>
 
             {/* PHONE */}
@@ -215,17 +303,34 @@ export default function MembershipModal() {
               <input
                 type="tel"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setPhone(value);
+                  setPhoneError(validatePhone(value));
+                }}
+                onBlur={() => setPhoneError(validatePhone(phone))}
                 placeholder="+৯১ XXXXXXXXXX"
                 className="w-full h-12 rounded-xl border border-[#dac6a7] bg-white/80 px-4 text-sm outline-none focus:border-[#2d5a27] focus:ring-4 focus:ring-[#2d5a27]/10 transition-all"
               />
+              {phoneError && (
+                <p className="mt-1 text-xs text-red-600">{phoneError}</p>
+              )}
             </div>
 
             {/* CTA */}
             <button
               onClick={handleRegister}
-              disabled={submitted}
-              className="group h-13 rounded-xl bg-linear-to-r from-[#2d5a27] to-[#3f7d37] text-white font-semibold cursor-pointer"
+              disabled={
+                submitted || !!validateName(fullName) || !!validatePhone(phone)
+              }
+              className={`group h-13 rounded-xl text-white font-semibold transition-all
+                  ${
+                    submitted ||
+                    !!validateName(fullName) ||
+                    !!validatePhone(phone)
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-linear-to-r from-[#2d5a27] to-[#3f7d37] cursor-pointer"
+                  }`}
             >
               <span className="flex items-center justify-center gap-2">
                 <Sparkles
