@@ -388,7 +388,7 @@ export default function Categories() {
                                 fill
                                 className="object-cover transition-transform duration-700 group-hover:scale-110"
                               />
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                              <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent" />
                               <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-white/90 text-[#264225] backdrop-blur-md text-xs font-semibold">
                                 হেরিটেজ কালেকশন
                               </div>
@@ -489,7 +489,7 @@ export default function Categories() {
         }}
       >
         <DialogContent
-          className="max-w-6xl! w-full p-0 border-0 rounded-none md:rounded-xl h-[100dvh] md:h-[90dvh] bg-[#faf7f1] overflow-hidden"
+          className="max-w-6xl! w-full p-0 border-0 rounded-none md:rounded-xl h-dvh md:h-[90dvh] bg-[#faf7f1] overflow-hidden"
           showCloseButton={false}
         >
           <button
