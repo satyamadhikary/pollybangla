@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, LucideIndianRupee, X } from "lucide-react";
 import {
@@ -10,34 +10,41 @@ import {
 } from "@/components/ui/carousel";
 import type { CarouselApi } from "@/components/ui/carousel";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { Product, productsData } from "@/data/productdata";
-import { masterCategories } from "@/data/categorydata";
+import { useI18n } from "./I18nProvider";
+import { translateNumber, type Product } from "@/lib/i18n";
 
 const NAV_BTN_BASE =
   "flex items-center justify-center h-10 w-10 rounded-full border border-gray-200 bg-white shadow-sm text-[#264225] transition-all duration-300 hover:bg-[#264225] hover:text-white";
 
+type ProductWithCategory = Product & {
+  categoryId: string;
+};
+
 export default function Categories() {
-  const [activeMaster, setActiveMaster] = useState<string | null>(() => {
+  const { language, t } = useI18n();
+  const [activeMasterId, setActiveMasterId] = useState<string | null>(() => {
     if (typeof window === "undefined") return null;
 
     const saved = localStorage.getItem("categoryState");
     if (!saved) return null;
 
     try {
-      return JSON.parse(saved).activeMaster;
+      const parsed = JSON.parse(saved);
+      return parsed.activeMasterId ?? parsed.activeMaster ?? null;
     } catch {
       return null;
     }
   });
 
-  const [activeTab, setActiveTab] = useState<string | null>(() => {
+  const [activeTabId, setActiveTabId] = useState<string | null>(() => {
     if (typeof window === "undefined") return null;
 
     const saved = localStorage.getItem("categoryState");
     if (!saved) return null;
 
     try {
-      return JSON.parse(saved).activeTab;
+      const parsed = JSON.parse(saved);
+      return parsed.activeTabId ?? parsed.activeTab ?? null;
     } catch {
       return null;
     }
@@ -55,60 +62,74 @@ export default function Categories() {
   const [showLeftProducts, setShowLeftProducts] = useState(false);
   const [showRightProducts, setShowRightProducts] = useState(false);
 
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<ProductWithCategory | null>(null);
   const [expandedDescription, setExpandedDescription] = useState(false);
 
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
+  const masterCategories = t.categories.masters;
+  const productsData: Record<string, readonly Product[]> = t.categories.products;
 
-  // Masters shown in the scrollable carousel = all except active
-  const carouselMasters = masterCategories.filter(
-    (m) => m.title !== activeMaster,
+  const activeMaster = masterCategories.find((master) => master.id === activeMasterId) ?? null;
+  const carouselMasters = masterCategories.filter((master) => master.id !== activeMasterId);
+  const currentSubCategories = activeMaster?.children ?? [];
+  const activeCategoryTitle =
+    currentSubCategories.find((category) => category.id === activeTabId)?.title ?? "";
+
+  const defaultProducts = useMemo(
+    () =>
+      Object.entries(productsData).flatMap(([categoryId, products]) =>
+        products.slice(0, 2).map((product) => ({
+          ...product,
+          categoryId,
+        })),
+      ),
+    [productsData],
   );
 
-  const currentSubCategories =
-    masterCategories.find((m) => m.title === activeMaster)?.children ?? [];
-
-  const defaultProducts = Object.values(productsData).flatMap((products) =>
-    products.slice(0, 2),
-  ); // 2 products from each category
-
-  // Products to display
-  const currentProducts =
-    activeMaster && activeTab ? productsData[activeTab] || [] : defaultProducts;
+  const currentProducts: ProductWithCategory[] =
+    activeTabId && activeTabId in productsData
+      ? productsData[activeTabId as keyof typeof productsData].map((product) => ({
+          ...product,
+          categoryId: activeTabId,
+        }))
+      : activeMasterId
+        ? []
+        : defaultProducts;
 
   useEffect(() => {
     localStorage.setItem(
       "categoryState",
       JSON.stringify({
-        activeMaster,
-        activeTab,
+        activeMasterId,
+        activeTabId,
       }),
     );
-  }, [activeMaster, activeTab]);
+  }, [activeMasterId, activeTabId]);
 
   useEffect(() => {
-    const membershipId = localStorage.getItem("membershipId");
-    setIsMember(!!membershipId);
+    const timeoutId = window.setTimeout(() => {
+      const membershipId = localStorage.getItem("membershipId");
+      setIsMember(!!membershipId);
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, []);
 
-  const handleMasterChange = (masterTitle: string) => {
-    setActiveMaster(masterTitle);
-    const first =
-      masterCategories.find((m) => m.title === masterTitle)?.children[0] ??
-      null;
-    setActiveTab(first);
+  const handleMasterChange = (masterId: string) => {
+    setActiveMasterId(masterId);
+    const first = masterCategories.find((master) => master.id === masterId)?.children[0]?.id ?? null;
+    setActiveTabId(first);
     productApi?.scrollTo(0);
     tabApi?.scrollTo(0);
   };
 
   const handleMasterClear = () => {
-    setActiveMaster(null);
-    setActiveTab(null);
+    setActiveMasterId(null);
+    setActiveTabId(null);
     productApi?.scrollTo(0);
     tabApi?.scrollTo(0);
   };
 
-  // MASTER CAROUSEL BUTTONS
   useEffect(() => {
     if (!masterApi) return;
     const update = () => {
@@ -124,7 +145,6 @@ export default function Categories() {
     };
   }, [masterApi, carouselMasters]);
 
-  // SUB-CATEGORY BUTTONS
   useEffect(() => {
     if (!tabApi) return;
     const update = () => {
@@ -140,7 +160,6 @@ export default function Categories() {
     };
   }, [tabApi]);
 
-  // PRODUCT BUTTONS
   useEffect(() => {
     if (!productApi) return;
     const update = () => {
@@ -158,30 +177,25 @@ export default function Categories() {
 
   useEffect(() => {
     productApi?.scrollTo(0);
-  }, [activeTab, productApi]);
+  }, [activeTabId, productApi]);
 
-  // Re-check master arrows when carouselMasters changes
   useEffect(() => {
     masterApi?.reInit();
-  }, [activeMaster, masterApi]);
+  }, [activeMasterId, masterApi]);
 
-  const handleWhatsAppOrder = (product: Product) => {
-    const message = `আমি এই প্রোডাক্টটি অর্ডার করতে চাই।\n\nপ্রোডাক্ট: ${product.name}\nদাম: ₹${getPrice(product.price)} ${isMember ? "(৫০% সদস্য ছাড় প্রয়োগ করা হয়েছে)" : ""}\nপরিমাণ: ${product.quantity}`;
+  const displayNumber = (value: string | number) => translateNumber(value, language);
+
+  const getPrice = (price: string) => {
+    const numericPrice = Number(price);
+    return isMember ? Math.round(numericPrice * 0.5).toString() : price;
+  };
+
+  const handleWhatsAppOrder = (product: ProductWithCategory) => {
+    const message = `${t.categories.whatsappMessage.intro}\n\n${t.categories.whatsappMessage.product}: ${product.name}\n${t.categories.whatsappMessage.price}: ₹${displayNumber(getPrice(product.price))} ${isMember ? `(${t.categories.memberDiscount})` : ""}\n${t.categories.whatsappMessage.quantity}: ${product.quantity}`;
     window.open(
       `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`,
       "_blank",
     );
-  };
-
-  const bnToEn = (value: string) =>
-    value.replace(/[০-৯]/g, (d) => String("০১২৩৪৫৬৭৮৯".indexOf(d)));
-
-  const enToBn = (value: string | number) =>
-    value.toString().replace(/\d/g, (d) => "০১২৩৪৫৬৭৮৯"[Number(d)]);
-
-  const getPrice = (price: string) => {
-    if (!isMember) return price;
-    return enToBn(Math.round(Number(bnToEn(price)) * 0.5));
   };
 
   return (
@@ -191,26 +205,24 @@ export default function Categories() {
         id="categories"
       >
         <div className="max-w-7xl mx-auto">
-          {/* HEADER */}
           <div className="text-center mb-14">
             <div
               className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium mb-4"
               style={{ background: "#efe5d1", color: "#264225" }}
             >
-              বাংলার ঐতিহ্যবাহী সংগ্রহ
+              {t.categories.eyebrow}
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-[#264225] capitalize">
-              জনপ্রিয় বিভাগসমূহ
+              {t.categories.title}
             </h2>
             <p className="mt-4 max-w-2xl mx-auto text-gray-600 text-lg">
-              গ্রামীণ শিল্প, কৃষিপণ্য ও হস্তশিল্পের সেরা সংগ্রহ এক জায়গায়।
+              {t.categories.description}
             </p>
           </div>
 
-          {/* ── MASTER CATEGORY ROW ── */}
           <div
             className={`transition-all duration-300 overflow-hidden ${
-              activeMaster
+              activeMasterId
                 ? "max-h-0 opacity-0 mb-0 pointer-events-none"
                 : "max-h-20 opacity-100 mb-6"
             }`}
@@ -226,6 +238,7 @@ export default function Categories() {
                 <button
                   onClick={() => masterApi?.scrollPrev()}
                   className={NAV_BTN_BASE}
+                  aria-label="Previous category"
                 >
                   <ChevronLeft className="h-4 w-4" />
                 </button>
@@ -237,11 +250,11 @@ export default function Categories() {
                   setApi={setMasterApi}
                 >
                   <CarouselContent className="-ml-2">
-                    {masterCategories.map((master, index) => (
-                      <CarouselItem key={index} className="basis-auto pl-2">
+                    {masterCategories.map((master) => (
+                      <CarouselItem key={master.id} className="basis-auto pl-2">
                         <button
-                          onClick={() => handleMasterChange(master.title)}
-                          className="px-5 py-2 rounded-full border border-gray-200 bg-white text-gray-700 whitespace-nowrap transition-all duration-300 hover:border-[#264225] hover:text-[#264225]"
+                          onClick={() => handleMasterChange(master.id)}
+                          className="px-5 py-2 rounded-full border border-gray-200 bg-white text-gray-700 whitespace-nowrap transition-all duration-300 hover:border-[#264225] hover:text-[#264225] cursor-pointer"
                         >
                           {master.title}
                         </button>
@@ -261,6 +274,7 @@ export default function Categories() {
                 <button
                   onClick={() => masterApi?.scrollNext()}
                   className={NAV_BTN_BASE}
+                  aria-label="Next category"
                 >
                   <ChevronRight className="h-4 w-4" />
                 </button>
@@ -268,30 +282,26 @@ export default function Categories() {
             </div>
           </div>
 
-          {/* ── SUB-CATEGORY ROW ── */}
           <div
             className={`transition-all duration-300 overflow-hidden ${
-              activeMaster
+              activeMasterId
                 ? "max-h-20 opacity-100 mb-6"
                 : "max-h-0 opacity-0 mb-0 pointer-events-none"
             }`}
           >
             <div className="flex items-center gap-2">
-              {/* SELECTED MASTER PILL pinned left */}
               <button
                 onClick={handleMasterClear}
                 className="shrink-0 flex items-center gap-1.5 pl-4 pr-2 py-2 rounded-full bg-[#264225] text-white whitespace-nowrap text-sm font-medium transition-all duration-300"
               >
-                <span>{activeMaster}</span>
+                <span>{activeMaster?.title}</span>
                 <span className="flex items-center justify-center w-5 h-5 rounded-full bg-white/20 hover:bg-white/40 transition-colors duration-200 cursor-pointer">
                   <X className="h-3 w-3" />
                 </span>
               </button>
 
-              {/* DIVIDER */}
               <div className="h-6 w-px bg-gray-200 shrink-0" />
 
-              {/* LEFT ARROW */}
               <div
                 className={`hidden md:flex shrink-0 transition-all duration-600 cursor-pointer ${
                   leftVisible ? "w-12 opacity-100" : "w-0 opacity-0"
@@ -300,31 +310,31 @@ export default function Categories() {
                 <button
                   onClick={() => tabApi?.scrollPrev()}
                   className={NAV_BTN_BASE}
+                  aria-label="Previous subcategory"
                 >
                   <ChevronLeft className="h-4 w-4" />
                 </button>
               </div>
 
-              {/* SUB-CATEGORY CAROUSEL */}
               <div className="flex-1 min-w-0">
                 <Carousel
                   opts={{ align: "start", dragFree: true, duration: 25 }}
                   setApi={setTabApi}
                 >
                   <CarouselContent className="-ml-2">
-                    {currentSubCategories.map((sub, index) => {
-                      const isActive = activeTab === sub;
+                    {currentSubCategories.map((sub) => {
+                      const isActive = activeTabId === sub.id;
                       return (
-                        <CarouselItem key={index} className="basis-auto pl-2">
+                        <CarouselItem key={sub.id} className="basis-auto pl-2">
                           <button
-                            onClick={() => setActiveTab(sub)}
+                            onClick={() => setActiveTabId(sub.id)}
                             className={`px-5 py-2 rounded-full border whitespace-nowrap transition-all duration-300 text-sm cursor-pointer ${
                               isActive
                                 ? "bg-[#264225] text-white border-[#264225]"
                                 : "bg-white border-gray-200 text-gray-700 hover:border-[#264225] hover:text-[#264225]"
                             }`}
                           >
-                            {sub}
+                            {sub.title}
                           </button>
                         </CarouselItem>
                       );
@@ -333,7 +343,6 @@ export default function Categories() {
                 </Carousel>
               </div>
 
-              {/* RIGHT ARROW */}
               <div
                 className={`hidden md:flex shrink-0 transition-all duration-600 cursor-pointer ${
                   rightVisible ? "w-12 opacity-100" : "w-0 opacity-0"
@@ -342,6 +351,7 @@ export default function Categories() {
                 <button
                   onClick={() => tabApi?.scrollNext()}
                   className={NAV_BTN_BASE}
+                  aria-label="Next subcategory"
                 >
                   <ChevronRight className="h-4 w-4" />
                 </button>
@@ -349,7 +359,6 @@ export default function Categories() {
             </div>
           </div>
 
-          {/* ── PRODUCTS ── */}
           <div className="transition-all duration-600 opacity-100">
             {currentProducts.length > 0 ? (
               <div className="flex items-stretch gap-4">
@@ -361,6 +370,7 @@ export default function Categories() {
                   <button
                     onClick={() => productApi?.scrollPrev()}
                     className="w-full rounded-md border border-gray-200 bg-white shadow-sm flex items-center justify-center text-[#264225] transition-all duration-300 hover:bg-[#264225] hover:text-white"
+                    aria-label="Previous product"
                   >
                     <ChevronLeft className="h-5 w-5" />
                   </button>
@@ -374,7 +384,7 @@ export default function Categories() {
                     <CarouselContent className="-ml-5">
                       {currentProducts.map((product) => (
                         <CarouselItem
-                          key={product.id}
+                          key={`${product.categoryId}-${product.id}`}
                           className="pl-5 basis-[85%] sm:basis-[50%] md:basis-[40%] lg:basis-[28%]"
                         >
                           <div
@@ -390,7 +400,7 @@ export default function Categories() {
                               />
                               <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent" />
                               <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-white/90 text-[#264225] backdrop-blur-md text-xs font-semibold">
-                                হেরিটেজ কালেকশন
+                                {t.categories.heritage}
                               </div>
                             </div>
                             <div className="p-5">
@@ -398,30 +408,30 @@ export default function Categories() {
                                 {product.name}
                               </h3>
                               <p className="mt-2 text-sm text-gray-500">
-                                {product.quantity}
+                                {displayNumber(product.quantity)}
                               </p>
                               <div className="mt-5 flex items-center justify-between">
                                 <div>
-                                  <p className="text-xs text-gray-500">মূল্য</p>
+                                  <p className="text-xs text-gray-500">{t.categories.price}</p>
                                   {isMember ? (
                                     <div className="flex items-end gap-1">
                                       <div className="flex items-center text-2xl font-bold text-[#264225]">
                                         <LucideIndianRupee className="h-5 w-5" />
-                                        {getPrice(product.price)}
+                                        {displayNumber(getPrice(product.price))}
                                       </div>
                                       <p className="text-sm text-gray-400 line-through mb-0.5">
-                                        ₹{product.price}
+                                        ₹{displayNumber(product.price)}
                                       </p>
                                     </div>
                                   ) : (
                                     <div className="flex items-center text-2xl font-bold text-[#264225]">
                                       <LucideIndianRupee className="h-5 w-5" />
-                                      {product.price}
+                                      {displayNumber(product.price)}
                                     </div>
                                   )}
                                 </div>
                                 <div className="px-4 py-2 rounded-xl bg-[#264225] text-white text-sm font-medium group-hover:bg-[#355f35] group-hover:scale-[1.05] transition-all duration-500">
-                                  বিস্তারিত
+                                  {t.categories.details}
                                 </div>
                               </div>
                             </div>
@@ -440,6 +450,7 @@ export default function Categories() {
                   <button
                     onClick={() => productApi?.scrollNext()}
                     className="w-full rounded-md border border-gray-200 bg-white shadow-sm flex items-center justify-center text-[#264225] transition-all duration-300 hover:bg-[#264225] hover:text-white"
+                    aria-label="Next product"
                   >
                     <ChevronRight className="h-5 w-5" />
                   </button>
@@ -465,12 +476,11 @@ export default function Categories() {
                 </div>
 
                 <h3 className="text-2xl font-bold text-[#264225] mb-3">
-                  পণ্য উপলব্ধ নয়
+                  {t.categories.noProductsTitle}
                 </h3>
 
                 <p className="max-w-md text-gray-500 leading-7">
-                  আমরা এই বিভাগে কোনও পণ্য উপলব্ধ নেই। অন্য বিভাগ চেক করুন বা
-                  পরে আবার আসুন।
+                  {t.categories.noProductsText}
                 </p>
               </div>
             )}
@@ -478,7 +488,6 @@ export default function Categories() {
         </div>
       </section>
 
-      {/* DIALOG — unchanged */}
       <Dialog
         open={!!selectedProduct}
         onOpenChange={(open) => {
@@ -498,15 +507,14 @@ export default function Categories() {
               setExpandedDescription(false);
             }}
             className="absolute top-3 right-3 z-100 h-8 w-8 rounded-xl bg-white/90 backdrop-blur shadow-sm border border-gray-200 flex items-center justify-center text-[#264225] hover:scale-105 transition-all duration-300 cursor-pointer hover:bg-[#264225] hover:text-white"
+            aria-label="Close product details"
           >
             <X className="h-4 w-4" />
           </button>
 
           {selectedProduct && (
             <>
-              <DialogTitle className="sr-only">
-                {selectedProduct.name}
-              </DialogTitle>
+              <DialogTitle className="sr-only">{selectedProduct.name}</DialogTitle>
               <div className="grid grid-cols-1 md:grid-cols-[1.1fr_0.9fr] h-full overflow-hidden">
                 <div className="relative h-80 md:h-full overflow-hidden">
                   <Image
@@ -517,9 +525,9 @@ export default function Categories() {
                   />
                   <div className="absolute inset-0 bg-linear-to-t from-black/50 via-black/10 to-transparent" />
                   <div className="absolute bottom-5 left-5 bg-white/90 backdrop-blur-md px-5 py-3 rounded-2xl shadow-xl border border-white/40">
-                    <p className="text-xs text-gray-500 mb-1">বিভাগ</p>
+                    <p className="text-xs text-gray-500 mb-1">{t.categories.category}</p>
                     <div className="flex items-center text-[#264225] font-bold text-xl">
-                      {activeTab}
+                      {activeCategoryTitle}
                     </div>
                   </div>
                 </div>
@@ -531,32 +539,32 @@ export default function Categories() {
                       style={{ background: "#efe5d1", color: "#264225" }}
                     >
                       <span className="w-2 h-2 rounded-full bg-green-700" />
-                      জনপ্রিয় পণ্য
+                      {t.categories.popularProduct}
                     </div>
                     <h2 className="text-3xl md:text-4xl font-bold text-[#264225] leading-tight mb-5">
                       {selectedProduct.name}
                     </h2>
                     <div className="grid grid-cols-2 gap-4 mb-8">
                       <div className="bg-white rounded-2xl p-4">
-                        <p className="text-sm text-gray-500 mb-1">পরিমাণ</p>
+                        <p className="text-sm text-gray-500 mb-1">{t.categories.quantity}</p>
                         <p className="flex items-center text-[#264225] font-bold text-3xl uppercase">
-                          {selectedProduct.quantity}
+                          {displayNumber(selectedProduct.quantity)}
                         </p>
                       </div>
                       <div className="bg-white rounded-2xl p-4">
-                        <p className="text-sm text-gray-500 mb-1">মূল্য</p>
+                        <p className="text-sm text-gray-500 mb-1">{t.categories.price}</p>
                         {isMember ? (
                           <div className="flex items-end gap-1">
                             <p className="flex items-center text-[#264225] font-bold text-3xl">
-                              ₹{getPrice(selectedProduct.price)}
+                              ₹{displayNumber(getPrice(selectedProduct.price))}
                             </p>
                             <p className="text-sm text-gray-400 line-through mb-0.5">
-                              ₹{selectedProduct.price}
+                              ₹{displayNumber(selectedProduct.price)}
                             </p>
                           </div>
                         ) : (
                           <p className="flex items-center text-[#264225] font-bold text-3xl">
-                            ₹{selectedProduct.price}
+                            ₹{displayNumber(selectedProduct.price)}
                           </p>
                         )}
                       </div>
@@ -565,8 +573,8 @@ export default function Categories() {
                       className="bg-white rounded-[28px] p-6 border shadow-sm"
                       style={{ borderColor: "#ece4d4" }}
                     >
-                      <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                        পণ্যের বিবরণ
+                      <h3 className="text-lg font-semibold text-gray-800 mb-1">
+                        {t.categories.descriptionTitle}
                       </h3>
                       <p className="text-gray-600 leading-8 text-[15px] md:text-base">
                         <span>
@@ -577,14 +585,10 @@ export default function Categories() {
                         {selectedProduct.description.length > 220 && (
                           <button
                             type="button"
-                            onClick={() =>
-                              setExpandedDescription(!expandedDescription)
-                            }
+                            onClick={() => setExpandedDescription(!expandedDescription)}
                             className="ml-2 text-[#264225] font-semibold hover:underline cursor-pointer"
                           >
-                            {expandedDescription
-                              ? "Read Less"
-                              : "... Read More"}
+                            {expandedDescription ? t.categories.readLess : t.categories.readMore}
                           </button>
                         )}
                       </p>
@@ -595,7 +599,7 @@ export default function Categories() {
                       onClick={() => handleWhatsAppOrder(selectedProduct)}
                       className="w-full py-4 rounded-2xl bg-linear-to-r from-[#264225] to-[#355f35] text-white font-semibold text-lg shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer"
                     >
-                      WhatsApp-এ অর্ডার করুন
+                      {t.categories.orderWhatsApp}
                     </button>
                   </div>
                 </div>

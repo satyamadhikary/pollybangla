@@ -107,8 +107,8 @@ body {
 
 html[data-language="en"] body,
 html[lang="en"] body,
-html[data-language="en"] body :not(.notranslate):not(.notranslate *),
-html[lang="en"] body :not(.notranslate):not(.notranslate *) {
+html[data-language="hi"] body,
+html[lang="hi"] body {
   font-family: var(--font-roboto), Arial, Helvetica, sans-serif !important;
 }
 

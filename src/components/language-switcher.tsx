@@ -1,101 +1,34 @@
 "use client";
-import { useEffect, useState } from "react";
-import { parseCookies, setCookie } from "nookies";
+
 import Select from "react-select";
 import type { SingleValue } from "react-select";
-
-const COOKIE_NAME = "googtrans";
-
-interface LanguageDescriptor {
-  name: string;
-  title: string;
-}
-
-interface TranslationConfig {
-  languages: LanguageDescriptor[];
-  defaultLanguage: string;
-}
+import { languages, type Language } from "@/lib/i18n";
+import { useI18n } from "./I18nProvider";
 
 interface LanguageOption {
-  value: string;
+  value: Language;
   label: string;
 }
 
 const INDIA_FLAG = "\uD83C\uDDEE\uD83C\uDDF3";
 
-declare global {
-  interface Window {
-    __GOOGLE_TRANSLATION_CONFIG__?: TranslationConfig;
-  }
-}
-
-const getInitialLanguage = () => {
-  if (typeof window === "undefined") {
-    return undefined;
-  }
-
-  const cookies = parseCookies();
-  const existingLanguageCookieValue = cookies[COOKIE_NAME];
-
-  if (existingLanguageCookieValue) {
-    const sp = existingLanguageCookieValue.split("/");
-    if (sp.length > 2) {
-      return sp[2];
-    }
-  }
-
-  return window.__GOOGLE_TRANSLATION_CONFIG__?.defaultLanguage;
-};
-
-const getLanguageConfig = () => {
-  if (typeof window === "undefined") {
-    return undefined;
-  }
-
-  return window.__GOOGLE_TRANSLATION_CONFIG__;
-}
+const selectOptions: LanguageOption[] = languages.map((language) => ({
+  value: language.code,
+  label: language.label,
+}));
 
 const LanguageSwitcher = () => {
-  const [currentLanguage, setCurrentLanguage] = useState<string | undefined>(
-    getInitialLanguage
-  );
-  const languageConfig = getLanguageConfig();
+  const { language, setLanguage } = useI18n();
 
-  useEffect(() => {
-    if (!currentLanguage) return;
-
-    document.documentElement.dataset.language = currentLanguage;
-    document.documentElement.lang = currentLanguage;
-  }, [currentLanguage]);
-
-  if (!currentLanguage || !languageConfig) {
-    return null;
-  }
-
-  // Map languages to react-select format
-  const selectOptions = languageConfig.languages.map(
-    (lang: LanguageDescriptor): LanguageOption => ({
-      value: lang.name,
-      label: lang.title,
-    })
-  );
-
-  // Current selected language object
-  const selectedOption = selectOptions.find(
-    (opt) => opt.value === currentLanguage
-  );
+  const selectedOption = selectOptions.find((option) => option.value === language);
 
   const handleChange = (selected: SingleValue<LanguageOption>) => {
     if (!selected) return;
-    setCurrentLanguage(selected.value);
-    document.documentElement.dataset.language = selected.value;
-    document.documentElement.lang = selected.value;
-    setCookie(null, COOKIE_NAME, `/auto/${selected.value}`);
-    window.location.reload();
+    setLanguage(selected.value);
   };
 
   return (
-    <div className="text-center grid gap-4 notranslate">
+    <div className="text-center grid gap-4">
       <Select
         options={selectOptions}
         value={selectedOption}
@@ -118,14 +51,12 @@ const LanguageSwitcher = () => {
             ...provided,
             cursor: "pointer",
             color: "#004910",
-            backgroundColor: state.isFocused ? "#e6f4ea" : "white", // optional: light hover
+            backgroundColor: state.isFocused ? "#e6f4ea" : "white",
           }),
           control: (provided, state) => ({
             ...provided,
             cursor: "pointer",
-            boxShadow: state.isFocused
-              ? "0 0 0 1px #004910"
-              : provided.boxShadow,
+            boxShadow: state.isFocused ? "0 0 0 1px #004910" : provided.boxShadow,
             "&:hover": {
               borderColor: "#004910",
             },
@@ -136,4 +67,4 @@ const LanguageSwitcher = () => {
   );
 };
 
-export { LanguageSwitcher, COOKIE_NAME };
+export { LanguageSwitcher };

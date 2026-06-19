@@ -1,7 +1,7 @@
-import Script from "next/script";
 import { Roboto } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
+import { I18nProvider } from "@/components/I18nProvider";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -10,6 +10,7 @@ const roboto = Roboto({
 });
 
 export const dynamic = "force-dynamic";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -22,65 +23,9 @@ export default function RootLayout({
       className={roboto.variable}
       suppressHydrationWarning
     >
-      <head>
-        <Script id="active-language" strategy="beforeInteractive">
-          {`
-            (function () {
-              function getLanguageFromCookie() {
-                var match = document.cookie.match(/(?:^|; )googtrans=([^;]+)/);
-
-                if (match) {
-                  var parts = decodeURIComponent(match[1]).split("/");
-                  if (parts.length > 2 && parts[2]) {
-                    return parts[2];
-                  }
-                }
-
-                return "";
-              }
-
-              function setActiveLanguage() {
-                var language = getLanguageFromCookie() || document.documentElement.lang || "bn";
-
-                document.documentElement.dataset.language = language;
-                document.documentElement.lang = language;
-              }
-
-              setActiveLanguage();
-              window.addEventListener("load", setActiveLanguage);
-              window.addEventListener("focus", setActiveLanguage);
-              setInterval(setActiveLanguage, 500);
-            })();
-          `}
-        </Script>
-        <Script id="gtranslate-settings" strategy="beforeInteractive">
-          {`
-            window.__GOOGLE_TRANSLATION_CONFIG__ = {
-              defaultLanguage: "bn",
-              languages: [
-                { name: "bn", title: "Bangla" },
-                { name: "en", title: "English" },
-                { name: "hi", title: "Hindi" }
-              ]
-            };
-
-            window.gtranslateSettings = {
-              default_language: "bn",
-              languages: ["bn", "en", "hi"],
-              wrapper_selector: ".gtranslate_wrapper",
-              flag_size: 24,
-              switcher_horizontal_position: "inline"
-            };
-          `}
-        </Script>
-      </head>
       <body>
-        {children}
+        <I18nProvider>{children}</I18nProvider>
         <Analytics />
-        <Script
-          src="https://cdn.gtranslate.net/widgets/latest/dwf.js"
-          strategy="afterInteractive"
-        />
       </body>
     </html>
   );

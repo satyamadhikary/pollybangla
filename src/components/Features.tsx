@@ -1,3 +1,5 @@
+"use client";
+
 import {
   PackageCheck,
   Truck,
@@ -5,35 +7,17 @@ import {
   Megaphone,
   HandCoins,
 } from "lucide-react";
+import { useI18n } from "./I18nProvider";
+
+const icons = [Truck, PackageCheck, BadgeCheck, Megaphone, HandCoins];
 
 export default function Features() {
-  const items = [
-    {
-      title: "গ্রাম থেকে সংগ্রহ",
-      icon: Truck,
-      number: "01",
-    },
-    {
-      title: "প্রশিক্ষণ ও প্যাকেজিং",
-      icon: PackageCheck,
-      number: "02",
-    },
-    {
-      title: "গুণগত মান যাচাই",
-      icon: BadgeCheck,
-      number: "03",
-    },
-    {
-      title: "ডিজিটাল বিপণন",
-      icon: Megaphone,
-      number: "04",
-    },
-    {
-      title: "ন্যায্য মূল্য প্রদান",
-      icon: HandCoins,
-      number: "05",
-    },
-  ];
+  const { t } = useI18n();
+  const items = t.process.steps.map((title, index) => ({
+    title,
+    icon: icons[index],
+    number: String(index + 1).padStart(2, "0"),
+  }));
 
   return (
     <section
@@ -50,24 +34,22 @@ export default function Features() {
               color: "#264225",
             }}
           >
-            আমাদের প্রক্রিয়া
+            {t.process.eyebrow}
           </span>
 
           <h2
             className="mt-5 text-4xl md:text-5xl font-bold capitalize"
             style={{ color: "#264225" }}
           >
-            আমাদের কার্যধারা
+            {t.process.title}
           </h2>
 
           <p className="mt-4 max-w-2xl mx-auto text-gray-600">
-            গ্রাম বাংলার উৎপাদক থেকে শুরু করে গ্রাহকের হাতে পৌঁছানো পর্যন্ত
-            প্রতিটি ধাপ আমরা সততার সঙ্গে সম্পন্ন করি।
+            {t.process.description}
           </p>
         </div>
 
         <div className="relative">
-          {/* Connection Line */}
           <div
             className="hidden lg:block absolute top-20 left-0 right-0 h-[3px]"
             style={{
@@ -82,41 +64,14 @@ export default function Features() {
               return (
                 <div key={item.title} className="group relative">
                   <div
-                    className="
-                    rounded-[32px]
-                    p-8
-                    text-center
-                    backdrop-blur-sm
-                    border
-                    shadow-sm
-                    hover:shadow-2xl
-                    hover:-translate-y-3
-                    transition-all
-                    duration-500
-                    h-full
-                  "
+                    className="rounded-[32px] p-8 text-center backdrop-blur-sm border shadow-sm hover:shadow-2xl hover:-translate-y-3 transition-all duration-500 h-full"
                     style={{
                       background: "rgba(255,255,255,0.7)",
                       borderColor: "#d9ccb6",
                     }}
                   >
-                    {/* Step Number */}
                     <div
-                      className="
-                      absolute
-                      -top-4
-                      left-1/2
-                      -translate-x-1/2
-                      w-10
-                      h-10
-                      rounded-full
-                      flex
-                      items-center
-                      justify-center
-                      font-bold
-                      text-sm
-                      shadow-md
-                    "
+                      className="absolute -top-4 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm shadow-md"
                       style={{
                         background: "#264225",
                         color: "#fff",
@@ -125,21 +80,8 @@ export default function Features() {
                       {item.number}
                     </div>
 
-                    {/* Icon */}
                     <div
-                      className="
-                      w-20
-                      h-20
-                      mx-auto
-                      rounded-full
-                      flex
-                      items-center
-                      justify-center
-                      mt-4
-                      transition-all
-                      duration-500
-                      group-hover:scale-110
-                    "
+                      className="w-20 h-20 mx-auto rounded-full flex items-center justify-center mt-4 transition-all duration-500 group-hover:scale-110"
                       style={{
                         background: "linear-gradient(135deg,#efe5d1,#e0cfaa)",
                       }}

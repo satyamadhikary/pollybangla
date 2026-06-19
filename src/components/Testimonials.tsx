@@ -8,32 +8,11 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
-
 import { Quote } from "lucide-react";
+import { useI18n } from "./I18nProvider";
 
 export default function Testimonials() {
-  const data = [
-    {
-      name: "অর্ণব সেনগুপ্ত",
-      role: "কারিগর",
-      text: "সমবায়ের মাধ্যমে আমরা আমাদের পণ্যের সঠিক মূল্য পাচ্ছি।",
-    },
-    {
-      name: "শ্রাবণী রায়",
-      role: "কৃষক",
-      text: "এখন গ্রামের পণ্য শহরে সহজেই পৌঁছাচ্ছে।",
-    },
-    {
-      name: "দেবজ্যোতি বসু",
-      role: "উদ্যোক্তা",
-      text: "এই উদ্যোগ গ্রামের মানুষের জীবন পরিবর্তন করছে।",
-    },
-    {
-      name: "সুব্রত ঘোষ",
-      role: "হস্তশিল্পী",
-      text: "আমাদের পণ্য এখন দেশের বিভিন্ন প্রান্তে পৌঁছাচ্ছে।",
-    },
-  ];
+  const { t } = useI18n();
 
   return (
     <section
@@ -44,12 +23,10 @@ export default function Testimonials() {
           "linear-gradient(180deg,#f8f4eb 0%,#fffcf7 50%,#f8f4eb 100%)",
       }}
     >
-      {/* Background Blur */}
       <div className="absolute top-0 left-0 w-72 h-72 bg-[#d9ccb6]/40 blur-3xl rounded-full" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#264225]/10 blur-3xl rounded-full" />
 
       <div className="max-w-7xl mx-auto px-4 relative z-10">
-        {/* Heading */}
         <div className="text-center md:mb-16 mb-8">
           <span
             className="inline-block px-4 py-2 rounded-full text-sm font-medium"
@@ -58,18 +35,18 @@ export default function Testimonials() {
               color: "#264225",
             }}
           >
-            সদস্যদের অভিজ্ঞতা
+            {t.testimonials.eyebrow}
           </span>
 
           <h2
             className="mt-5 text-4xl md:text-5xl font-bold capitalize"
             style={{ color: "#264225" }}
           >
-            আমাদের সদস্যদের কথা
+            {t.testimonials.title}
           </h2>
 
           <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
-            আমাদের সমবায়ের সঙ্গে যুক্ত সদস্যদের বাস্তব অভিজ্ঞতা।
+            {t.testimonials.description}
           </p>
         </div>
 
@@ -83,7 +60,7 @@ export default function Testimonials() {
             className="w-full"
           >
             <CarouselContent>
-              {data.map((item) => (
+              {t.testimonials.items.map((item) => (
                 <CarouselItem
                   key={item.name}
                   className="md:basis-1/2 lg:basis-1/3"
@@ -95,19 +72,8 @@ export default function Testimonials() {
                       borderColor: "#e5d8c2",
                     }}
                   >
-                    {/* Quote Icon */}
                     <div
-                      className="
-                        w-14
-                        h-14
-                        rounded-full
-                        flex
-                        items-center
-                        justify-center
-                        group-hover:rotate-9
-                        transition-all
-                        duration-500
-                      "
+                      className="w-14 h-14 rounded-full flex items-center justify-center group-hover:rotate-9 transition-all duration-500"
                       style={{
                         background: "#efe4d0",
                       }}
@@ -115,14 +81,8 @@ export default function Testimonials() {
                       <Quote size={28} color="#264225" />
                     </div>
 
-                    {/* Text */}
                     <p
-                      className="
-                        mt-6
-                        text-lg
-                        leading-8
-                        min-h-[80px]
-                      "
+                      className="mt-6 text-lg leading-8 min-h-[80px]"
                       style={{
                         color: "#5a5a50",
                       }}
@@ -130,18 +90,9 @@ export default function Testimonials() {
                       “{item.text}”
                     </p>
 
-                    {/* User */}
                     <div className="flex items-center gap-4 mt-8">
                       <div
-                        className="
-                          w-14
-                          h-14
-                          rounded-full
-                          flex
-                          items-center
-                          justify-center
-                          font-bold
-                        "
+                        className="w-14 h-14 rounded-full flex items-center justify-center font-bold"
                         style={{
                           background: "#264225",
                           color: "#fff",

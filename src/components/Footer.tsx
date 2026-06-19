@@ -1,8 +1,12 @@
+"use client";
+
 import Image from "next/image";
 import { LanguageSwitcher } from "./language-switcher";
-import { navItems } from "@/data/navdata";
+import { useI18n } from "./I18nProvider";
 
 export default function Footer() {
+  const { t } = useI18n();
+
   return (
     <footer className="mt-16" style={{ background: "#17331b", color: "white" }}>
       <div className="max-w-7xl mx-auto px-4 py-16 pb-0">
@@ -17,23 +21,23 @@ export default function Footer() {
                 className="object-contain"
               />
               <h2 className="text-3xl font-bold leading-tight capitalize">
-                পল্লী বাংলার ঐতিহ্য সম্ভার
+                {t.brand}
               </h2>
             </div>
 
             <p className="mt-5 text-gray-300 leading-8">
-              গ্রাম বাংলার ঐতিহ্যবাহী পণ্যকে বিশ্বের সামনে তুলে ধরার উদ্যোগ।
+              {t.footer.description}
             </p>
           </div>
 
           <div className="col-span-2 flex md:flex-row flex-col justify-end md:gap-20 gap-10">
             <div>
               <h3 className="text-2xl font-semibold mb-5 capitalize">
-                দ্রুত লিংক
+                {t.footer.quickLinks}
               </h3>
 
               <div className="flex flex-col gap-3 text-gray-300">
-                {navItems.map((item, index) => (
+                {t.nav.map((item, index) => (
                   <a key={index} href={item.href} className="text-left">
                     {item.label}
                   </a>
@@ -43,18 +47,20 @@ export default function Footer() {
 
             <div>
               <h3 className="text-2xl font-semibold mb-5 capitalize">
-                যোগাযোগ
+                {t.footer.contact}
               </h3>
 
               <div className="space-y-4 text-gray-300">
-                <p>কলকাতা, পশ্চিমবঙ্গ</p>
+                <p>{t.footer.address}</p>
                 <p>+91 9876543210</p>
-                <p>info@pollibangla.com</p>
+                <p>info@Pollibangla.com</p>
               </div>
             </div>
 
             <div>
-              <h3 className="text-2xl font-semibold mb-5 capitalize">ভাষা</h3>
+              <h3 className="text-2xl font-semibold mb-5 capitalize">
+                {t.footer.language}
+              </h3>
 
               <div className="space-y-4 text-gray-300">
                 <LanguageSwitcher />
@@ -67,7 +73,7 @@ export default function Footer() {
           className="mt-14 py-8 border-t text-center text-gray-300"
           style={{ borderColor: "rgba(255,255,255,0.2)" }}
         >
-          © ২০২৬ পল্লী বাংলার ঐতিহ্য সম্ভার | সর্বস্বত্ব সংরক্ষিত
+          {t.footer.copyright}
         </div>
       </div>
     </footer>
