@@ -11,15 +11,51 @@ export const productsData: Record<string, Product[]> = {
   "ধান ও চাল": [
     {
       id: 1,
-      name: "প্রিমিয়াম নাজিরশাইল চাল",
+      name: "গোবিন্দভোগ চাল",
       description:
-        "Mustard Oil – 1L Authentic flavor. Zero chemicals. Just pure mustard.100% Cold-Pressed: Slow wood-press extraction, no heat or solvents. Retains natural pungency, aroma, and nutrients. Bold & Versatile: Perfect for curries, frying, pickles, tadkas & traditional massage. That real mustard kick.Heart-Smart: Rich in Omega-3, Vitamin E, and MUFA. Supports healthy cholesterol as part of a balanced diet. Clean Label: Single ingredient – only black mustard seeds. No additives, no refining, no blending. Farm Direct: Sourced from organic farms. Packed in amber glass to lock freshness. Ingredients: 100% Cold-Pressed Black Mustard Seeds Shelf Life: 9 Months | Net Qty: 1L Taste what refined oils can’t deliver.",
+        "সতর্কতার সাথে সংগ্রহ ও নিখুঁতভাবে বাছাই করা আমাদের গোবিন্দভোগ চাল তার অনন্য সুবাস, কোমল গঠন এবং অসাধারণ স্বাদের জন্য সুপরিচিত। পল্লী বাংলার ঐতিহ্য সম্ভার প্রিমিয়াম গোবিন্দভোগ চাল বিশ্বস্ত খামার থেকে যত্নসহকারে সংগ্রহ করা হয় এবং এর খাঁটি সুবাস, কোমলতা ও উন্নত মানের জন্য বিশেষভাবে নির্বাচিত হয়। বাংলার অন্যতম জনপ্রিয় এই চালের জাতটি খিচুড়ি, পায়েস ও পোলাওয়ের মতো ঐতিহ্যবাহী খাবার তৈরির জন্য আদর্শ; এমনকি দুর্গাপূজা ও বিভিন্ন উৎসব-পার্বণে দেবতাকে নিবেদিত 'প্রসাদ' হিসেবেও এটি ব্যবহৃত হয়। 'গোবিন্দজী'-র ভোগের প্রধান উপকরণ হিসেবে ব্যবহারের কারণেই এর এমন নামকরণ হয়েছে। এছাড়া, উৎসবের আমেজ এবং তৃপ্তিদায়ক খাবারের সাথেও এই চালের গভীর সংযোগ রয়েছে।",
       price: "৮৫",
       quantity: "১ কেজি",
       img: "/Premium Nazirshail Rice.webp",
     },
     {
       id: 2,
+      name: "মিনিকেট চাল (নতুন)",
+      description:
+        "উন্নত মানের মিনিকেট চাল যা প্রতিদিনের ব্যবহারের জন্য আদর্শ।",
+      price: "৭২",
+      quantity: "১ কেজি",
+      img: "/hero.png",
+    },
+    {
+      id: 3,
+      name: "মিনিকেট চাল (নতুন)",
+      description:
+        "উন্নত মানের মিনিকেট চাল যা প্রতিদিনের ব্যবহারের জন্য আদর্শ।",
+      price: "৭২",
+      quantity: "১ কেজি",
+      img: "/hero.png",
+    },
+    {
+      id: 4,
+      name: "মিনিকেট চাল (নতুন)",
+      description:
+        "উন্নত মানের মিনিকেট চাল যা প্রতিদিনের ব্যবহারের জন্য আদর্শ।",
+      price: "৭২",
+      quantity: "১ কেজি",
+      img: "/hero.png",
+    },
+    {
+      id: 5,
+      name: "মিনিকেট চাল (নতুন)",
+      description:
+        "উন্নত মানের মিনিকেট চাল যা প্রতিদিনের ব্যবহারের জন্য আদর্শ।",
+      price: "৭২",
+      quantity: "১ কেজি",
+      img: "/hero.png",
+    },
+    {
+      id: 6,
       name: "মিনিকেট চাল (নতুন)",
       description:
         "উন্নত মানের মিনিকেট চাল যা প্রতিদিনের ব্যবহারের জন্য আদর্শ।",
@@ -36,7 +72,7 @@ export const productsData: Record<string, Product[]> = {
       description: "সুন্দরবন থেকে সংগৃহীত শতভাগ খাঁটি প্রাকৃতিক মধু।",
       price: "৮৫০",
       quantity: "১ কেজি",
-      img: "/category4.jpg",
+      img: "/hero.png",
     },
   ],
 };

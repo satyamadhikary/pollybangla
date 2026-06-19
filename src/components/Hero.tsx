@@ -1,88 +1,73 @@
+"use client";
+
 import Image from "next/image";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
+
+const slides = [
+  {
+    desktop: "/hero3.png",
+    mobile: "/mobile4.jpg",
+  },
+  {
+    desktop: "/hero2.png",
+    mobile: "/mobile3.jpg",
+  },
+  {
+    desktop: "/hero1.png",
+    mobile: "/mobile2.jpg",
+  },
+   
+];
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden mt-21.75 h-[calc(100dvh-87px)]">
-      {/* BACKGROUND IMAGE */}
-      <Image
-        src="/hero.png"
-        alt="hero"
-        fill
-        priority
-        className="object-cover h-full w-full hidden md:block"
-      />
+    <section className="relative mt-21.75 h-[calc(100dvh-87px)] overflow-hidden">
+      <Carousel
+        opts={{
+          loop: true,
+          duration: 20,
+        }}
+        plugins={[
+          Autoplay({
+            delay: 5000,
+            stopOnInteraction: false,
+            stopOnMouseEnter: false,
+          }),
+        ]}
+        className="h-full"
+      >
+        <CarouselContent className="ml-0 h-full">
+          {slides.map((slide, index) => (
+            <CarouselItem
+              key={index}
+              className="pl-0 basis-full h-[calc(100dvh-87px)]"
+            >
+              <div className="relative h-full w-full">
+                <Image
+                  src={slide.desktop}
+                  alt=""
+                  fill
+                  priority={index === 0}
+                  className="hidden md:block object-cover"
+                />
 
-      <Image
-        src="/herobg-mobile.png"
-        alt="hero"
-        fill
-        priority
-    className="object-cover h-full w-full md:hidden block"
-      />
-
-      {/* DARK OVERLAY */}
-      {/* <div className="absolute inset-0 " /> */}
-
-      {/* CONTENT */}
-      <div className="relative z-10 h-full max-w-7xl mx-auto px-4 lg:px-8 flex flex-col justify-center">
-        <div className="max-w-xl">
-          <h1
-            className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight capitalize"
-            style={{ color: "#234224" }}
-          >
-            আমাদের ঐতিহ্য
-            <br />
-            আমাদের গর্ব
-          </h1>
-
-          <p
-            className="mt-4 text-lg md:text-xl leading-9"
-            style={{ color: "#234224" }}
-          >
-            গ্রামীণ শিল্প, কৃষি ও কুটির পণ্যের মাধ্যমে বাংলার
-            ঐতিহ্যকে নতুনভাবে তুলে ধরা।
-          </p>
-
-          {/* GLASS BUTTON */}
-          <a href="#categories">
-          <button
-            className="mt-6 px-12 py-3.5 rounded-xl text-white font-semibold border border-white/20 backdrop-blur-xs transition-all duration-300 cursor-pointer bg-[rgba(35,66,36,0.85)] hover:bg-[rgba(35,66,36,1)] shadow-lg"
-          >
-            এখনই শুরু করুন
-          </button>
-          </a>
-        </div>
-
-        {/* BOTTOM GLASS BOX */}
-        {/* <div className="absolute bottom-8 left-4 right-4 lg:left-auto lg:right-auto lg:w-full">
-          <div
-            className="max-w-5xl mx-auto rounded-2xl border border-white/20 p-6 lg:p-8 backdrop-blur-xs"
-            style={{
-              background: "rgba(35, 66, 36, 0.65)",
-              boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
-            }}
-          >
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-white">
-              {[
-                ["500+", "সক্রিয় সদস্য"],
-                ["64+", "জেলা জুড়ে"],
-                ["1000+", "পণ্য সংগ্রহ"],
-                ["100%", "প্রাকৃতিক পণ্য"],
-              ].map(([number, text]) => (
-                <div key={number} className="text-center">
-                  <h2 className="text-3xl md:text-4xl font-bold">
-                    {number}
-                  </h2>
-
-                  <p className="mt-2 text-sm md:text-base text-white/90">
-                    {text}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div> */}
-      </div>
+                <Image
+                  src={slide.mobile}
+                  alt=""
+                  fill
+                  priority={index === 0}
+                  className="block md:hidden object-cover"
+                />
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
     </section>
   );
 }
