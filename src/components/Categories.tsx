@@ -11,13 +11,30 @@ import {
 import type { CarouselApi } from "@/components/ui/carousel";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useI18n } from "./I18nProvider";
-import { translateNumber, type Product } from "@/lib/i18n";
+import { translateNumber, type Product, type ProductVariant } from "@/lib/i18n";
+import { productsData as productAssets } from "@/data/productdata";
 
 const NAV_BTN_BASE =
   "flex items-center justify-center h-10 w-10 rounded-full border border-gray-200 bg-white shadow-sm text-[#264225] transition-all duration-300 hover:bg-[#264225] hover:text-white";
 
 type ProductWithCategory = Product & {
   categoryId: string;
+  img: string;
+};
+
+// Returns a normalized variant list for any product.
+// If the product defines `variants`, use those directly.
+// Otherwise, fall back to a single variant built from its own price/quantity,
+// so products that haven't been migrated to the variants array still work.
+function getVariants(product: Product): ProductVariant[] {
+  if (product.variants && product.variants.length > 0) {
+    return product.variants;
+  }
+  return [{ quantity: product.quantity, price: product.price }];
+}
+
+const getProductImage = (id: number) => {
+  return productAssets.find((product) => product.id === id)?.img ?? "/hero.png";
 };
 
 export default function Categories() {
@@ -62,24 +79,33 @@ export default function Categories() {
   const [showLeftProducts, setShowLeftProducts] = useState(false);
   const [showRightProducts, setShowRightProducts] = useState(false);
 
-  const [selectedProduct, setSelectedProduct] = useState<ProductWithCategory | null>(null);
+  const [selectedProduct, setSelectedProduct] =
+    useState<ProductWithCategory | null>(null);
   const [expandedDescription, setExpandedDescription] = useState(false);
+  // NEW: which variant (quantity/price option) is currently selected in the modal
+  const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
 
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
   const masterCategories = t.categories.masters;
-  const productsData: Record<string, readonly Product[]> = t.categories.products;
+  const productsData: Record<string, readonly Product[]> =
+    t.categories.products;
 
-  const activeMaster = masterCategories.find((master) => master.id === activeMasterId) ?? null;
-  const carouselMasters = masterCategories.filter((master) => master.id !== activeMasterId);
+  const activeMaster =
+    masterCategories.find((master) => master.id === activeMasterId) ?? null;
+  const carouselMasters = masterCategories.filter(
+    (master) => master.id !== activeMasterId,
+  );
   const currentSubCategories = activeMaster?.children ?? [];
   const activeCategoryTitle =
-    currentSubCategories.find((category) => category.id === activeTabId)?.title ?? "";
+    currentSubCategories.find((category) => category.id === activeTabId)
+      ?.title ?? "";
 
   const defaultProducts = useMemo(
     () =>
       Object.entries(productsData).flatMap(([categoryId, products]) =>
         products.slice(0, 2).map((product) => ({
           ...product,
+          img: getProductImage(product.id),
           categoryId,
         })),
       ),
@@ -88,10 +114,13 @@ export default function Categories() {
 
   const currentProducts: ProductWithCategory[] =
     activeTabId && activeTabId in productsData
-      ? productsData[activeTabId as keyof typeof productsData].map((product) => ({
-          ...product,
-          categoryId: activeTabId,
-        }))
+      ? productsData[activeTabId as keyof typeof productsData].map(
+          (product) => ({
+            ...product,
+            img: getProductImage(product.id),
+            categoryId: activeTabId,
+          }),
+        )
       : activeMasterId
         ? []
         : defaultProducts;
@@ -117,7 +146,9 @@ export default function Categories() {
 
   const handleMasterChange = (masterId: string) => {
     setActiveMasterId(masterId);
-    const first = masterCategories.find((master) => master.id === masterId)?.children[0]?.id ?? null;
+    const first =
+      masterCategories.find((master) => master.id === masterId)?.children[0]
+        ?.id ?? null;
     setActiveTabId(first);
     productApi?.scrollTo(0);
     tabApi?.scrollTo(0);
@@ -183,20 +214,37 @@ export default function Categories() {
     masterApi?.reInit();
   }, [activeMasterId, masterApi]);
 
-  const displayNumber = (value: string | number) => translateNumber(value, language);
+  // Reset the variant selection back to the first option whenever a different
+  // product is opened, so a previous product's quantity choice doesn't leak in.
+  useEffect(() => {
+    setSelectedVariantIndex(0);
+  }, [selectedProduct]);
 
+  const displayNumber = (value: string | number) =>
+    translateNumber(value, language);
+
+  // getPrice now takes the raw price string for whichever variant is active,
+  // rather than always reading product.price directly.
   const getPrice = (price: string) => {
     const numericPrice = Number(price);
     return isMember ? Math.round(numericPrice * 0.5).toString() : price;
   };
 
-  const handleWhatsAppOrder = (product: ProductWithCategory) => {
-    const message = `${t.categories.whatsappMessage.intro}\n\n${t.categories.whatsappMessage.product}: ${product.name}\n${t.categories.whatsappMessage.price}: ₹${displayNumber(getPrice(product.price))} ${isMember ? `(${t.categories.memberDiscount})` : ""}\n${t.categories.whatsappMessage.quantity}: ${product.quantity}`;
+  const handleWhatsAppOrder = (
+    product: ProductWithCategory,
+    variant: ProductVariant,
+  ) => {
+    const message = `${t.categories.whatsappMessage.intro}\n\n${t.categories.whatsappMessage.product}: ${product.name}\n${t.categories.whatsappMessage.price}: ₹${displayNumber(getPrice(variant.price))} ${isMember ? `(${t.categories.memberDiscount})` : ""}\n${t.categories.whatsappMessage.quantity}: ${variant.quantity}`;
     window.open(
       `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`,
       "_blank",
     );
   };
+
+  // Variants for whichever product is currently open in the modal.
+  const selectedVariants = selectedProduct ? getVariants(selectedProduct) : [];
+  const activeVariant =
+    selectedVariants[selectedVariantIndex] ?? selectedVariants[0];
 
   return (
     <>
@@ -382,62 +430,70 @@ export default function Categories() {
                     setApi={setProductApi}
                   >
                     <CarouselContent className="-ml-5">
-                      {currentProducts.map((product) => (
-                        <CarouselItem
-                          key={`${product.categoryId}-${product.id}`}
-                          className="pl-5 basis-[85%] sm:basis-[50%] md:basis-[40%] lg:basis-[28%]"
-                        >
-                          <div
-                            onClick={() => setSelectedProduct(product)}
-                            className="group bg-white rounded-[32px] overflow-hidden border border-[#ece4d4] transition-all duration-500 cursor-pointer h-full"
+                      {currentProducts.map((product) => {
+                        const cardVariant = getVariants(product)[0];
+
+                        return (
+                          <CarouselItem
+                            key={`${product.categoryId}-${product.id}`}
+                            className="pl-5 basis-[85%] sm:basis-[50%] md:basis-[40%] lg:basis-[28%]"
                           >
-                            <div className="relative h-64 overflow-hidden">
-                              <Image
-                                src={product.img}
-                                alt={product.name}
-                                fill
-                                className="object-cover transition-transform duration-700 group-hover:scale-110"
-                              />
-                              <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent" />
-                              <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-white/90 text-[#264225] backdrop-blur-md text-xs font-semibold">
-                                {t.categories.heritage}
+                            <div
+                              onClick={() => setSelectedProduct(product)}
+                              className="group bg-white rounded-[32px] overflow-hidden border border-[#ece4d4] transition-all duration-500 cursor-pointer h-full"
+                            >
+                              <div className="relative h-64 overflow-hidden">
+                                <Image
+                                  src={product.img}
+                                  alt={product.name}
+                                  fill
+                                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                                />
+                                <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent" />
+                                <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-white/90 text-[#264225] backdrop-blur-md text-xs font-semibold">
+                                  {t.categories.heritage}
+                                </div>
                               </div>
-                            </div>
-                            <div className="p-5">
-                              <h3 className="text-xl font-bold text-[#264225] line-clamp-2">
-                                {product.name}
-                              </h3>
-                              <p className="mt-2 text-sm text-gray-500">
-                                {displayNumber(product.quantity)}
-                              </p>
-                              <div className="mt-5 flex items-center justify-between">
-                                <div>
-                                  <p className="text-xs text-gray-500">{t.categories.price}</p>
-                                  {isMember ? (
-                                    <div className="flex items-end gap-1">
+                              <div className="p-5">
+                                <h3 className="text-xl font-bold text-[#264225] line-clamp-2">
+                                  {product.name}
+                                </h3>
+                                <p className="mt-2 text-sm text-gray-500">
+                                  {displayNumber(cardVariant.quantity)}
+                                </p>
+                                <div className="mt-5 flex items-center justify-between">
+                                  <div>
+                                    <p className="text-xs text-gray-500">
+                                      {t.categories.price}
+                                    </p>
+                                    {isMember ? (
+                                      <div className="flex items-end gap-1">
+                                        <div className="flex items-center text-2xl font-bold text-[#264225]">
+                                          <LucideIndianRupee className="h-5 w-5" />
+                                          {displayNumber(
+                                            getPrice(cardVariant.price),
+                                          )}
+                                        </div>
+                                        <p className="text-sm text-gray-400 line-through mb-0.5">
+                                          ₹{displayNumber(cardVariant.price)}
+                                        </p>
+                                      </div>
+                                    ) : (
                                       <div className="flex items-center text-2xl font-bold text-[#264225]">
                                         <LucideIndianRupee className="h-5 w-5" />
-                                        {displayNumber(getPrice(product.price))}
+                                        {displayNumber(cardVariant.price)}
                                       </div>
-                                      <p className="text-sm text-gray-400 line-through mb-0.5">
-                                        ₹{displayNumber(product.price)}
-                                      </p>
-                                    </div>
-                                  ) : (
-                                    <div className="flex items-center text-2xl font-bold text-[#264225]">
-                                      <LucideIndianRupee className="h-5 w-5" />
-                                      {displayNumber(product.price)}
-                                    </div>
-                                  )}
-                                </div>
-                                <div className="px-4 py-2 rounded-xl bg-[#264225] text-white text-sm font-medium group-hover:bg-[#355f35] group-hover:scale-[1.05] transition-all duration-500">
-                                  {t.categories.details}
+                                    )}
+                                  </div>
+                                  <div className="px-4 py-2 rounded-xl bg-[#264225] text-white text-sm font-medium group-hover:bg-[#355f35] group-hover:scale-[1.05] transition-all duration-500">
+                                    {t.categories.details}
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        </CarouselItem>
-                      ))}
+                          </CarouselItem>
+                        );
+                      })}
                     </CarouselContent>
                   </Carousel>
                 </div>
@@ -512,9 +568,11 @@ export default function Categories() {
             <X className="h-4 w-4" />
           </button>
 
-          {selectedProduct && (
+          {selectedProduct && activeVariant && (
             <>
-              <DialogTitle className="sr-only">{selectedProduct.name}</DialogTitle>
+              <DialogTitle className="sr-only">
+                {selectedProduct.name}
+              </DialogTitle>
               <div className="grid grid-cols-1 md:grid-cols-[1.1fr_0.9fr] h-full overflow-hidden">
                 <div className="relative h-80 md:h-full overflow-hidden">
                   <Image
@@ -525,7 +583,9 @@ export default function Categories() {
                   />
                   <div className="absolute inset-0 bg-linear-to-t from-black/50 via-black/10 to-transparent" />
                   <div className="absolute bottom-5 left-5 bg-white/90 backdrop-blur-md px-5 py-3 rounded-2xl shadow-xl border border-white/40">
-                    <p className="text-xs text-gray-500 mb-1">{t.categories.category}</p>
+                    <p className="text-xs text-gray-500 mb-1">
+                      {t.categories.category}
+                    </p>
                     <div className="flex items-center text-[#264225] font-bold text-xl">
                       {activeCategoryTitle}
                     </div>
@@ -544,27 +604,60 @@ export default function Categories() {
                     <h2 className="text-3xl md:text-4xl font-bold text-[#264225] leading-tight mb-5">
                       {selectedProduct.name}
                     </h2>
+
+                    {/* NEW: quantity options, only rendered when there's more than one */}
+                    {selectedVariants.length > 1 && (
+                      <div className="mb-6">
+                        <p className="text-sm text-gray-500 mb-2">
+                          {t.categories.quantity}
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {selectedVariants.map((variant, index) => {
+                            const isActive = index === selectedVariantIndex;
+                            return (
+                              <button
+                                key={`${variant.quantity}-${index}`}
+                                type="button"
+                                onClick={() => setSelectedVariantIndex(index)}
+                                className={`px-4 py-2 rounded-full border text-sm font-medium whitespace-nowrap transition-all duration-300 cursor-pointer ${
+                                  isActive
+                                    ? "bg-[#264225] text-white border-[#264225]"
+                                    : "bg-white border-gray-200 text-gray-700 hover:border-[#264225] hover:text-[#264225]"
+                                }`}
+                              >
+                                {displayNumber(variant.quantity)}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+
                     <div className="grid grid-cols-2 gap-4 mb-8">
                       <div className="bg-white rounded-2xl p-4">
-                        <p className="text-sm text-gray-500 mb-1">{t.categories.quantity}</p>
+                        <p className="text-sm text-gray-500 mb-1">
+                          {t.categories.quantity}
+                        </p>
                         <p className="flex items-center text-[#264225] font-bold text-3xl uppercase">
-                          {displayNumber(selectedProduct.quantity)}
+                          {displayNumber(activeVariant.quantity)}
                         </p>
                       </div>
                       <div className="bg-white rounded-2xl p-4">
-                        <p className="text-sm text-gray-500 mb-1">{t.categories.price}</p>
+                        <p className="text-sm text-gray-500 mb-1">
+                          {t.categories.price}
+                        </p>
                         {isMember ? (
                           <div className="flex items-end gap-1">
                             <p className="flex items-center text-[#264225] font-bold text-3xl">
-                              ₹{displayNumber(getPrice(selectedProduct.price))}
+                              ₹{displayNumber(getPrice(activeVariant.price))}
                             </p>
                             <p className="text-sm text-gray-400 line-through mb-0.5">
-                              ₹{displayNumber(selectedProduct.price)}
+                              ₹{displayNumber(activeVariant.price)}
                             </p>
                           </div>
                         ) : (
                           <p className="flex items-center text-[#264225] font-bold text-3xl">
-                            ₹{displayNumber(selectedProduct.price)}
+                            ₹{displayNumber(activeVariant.price)}
                           </p>
                         )}
                       </div>
@@ -585,10 +678,14 @@ export default function Categories() {
                         {selectedProduct.description.length > 220 && (
                           <button
                             type="button"
-                            onClick={() => setExpandedDescription(!expandedDescription)}
+                            onClick={() =>
+                              setExpandedDescription(!expandedDescription)
+                            }
                             className="ml-2 text-[#264225] font-semibold hover:underline cursor-pointer"
                           >
-                            {expandedDescription ? t.categories.readLess : t.categories.readMore}
+                            {expandedDescription
+                              ? t.categories.readLess
+                              : t.categories.readMore}
                           </button>
                         )}
                       </p>
@@ -596,7 +693,9 @@ export default function Categories() {
                   </div>
                   <div className="fixed md:absolute bottom-0 left-0 z-50 w-full p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] md:p-6 bg-[#faf9f5] border-t border-gray-200">
                     <button
-                      onClick={() => handleWhatsAppOrder(selectedProduct)}
+                      onClick={() =>
+                        handleWhatsAppOrder(selectedProduct, activeVariant)
+                      }
                       className="w-full py-4 rounded-2xl bg-linear-to-r from-[#264225] to-[#355f35] text-white font-semibold text-lg shadow-lg hover:scale-[1.02] transition-all duration-300 cursor-pointer"
                     >
                       {t.categories.orderWhatsApp}

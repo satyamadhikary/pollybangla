@@ -1,78 +1,86 @@
+export type ProductVariant = {
+  quantity: string;
+  price: string;
+};
+
 export type Product = {
   id: number;
-  name: string;
-  description: string;
-  price: string;
-  quantity: string;
+  categoryId: string;
   img: string;
+  price?: string;
+  quantity?: string;
+  variants?: ProductVariant[];
 };
 
-export const productsData: Record<string, Product[]> = {
-  "ধান ও চাল": [
-    {
-      id: 1,
-      name: "গোবিন্দভোগ চাল",
-      description:
-        "সতর্কতার সাথে সংগ্রহ ও নিখুঁতভাবে বাছাই করা আমাদের গোবিন্দভোগ চাল তার অনন্য সুবাস, কোমল গঠন এবং অসাধারণ স্বাদের জন্য সুপরিচিত। পল্লী বাংলার ঐতিহ্য সম্ভার প্রিমিয়াম গোবিন্দভোগ চাল বিশ্বস্ত খামার থেকে যত্নসহকারে সংগ্রহ করা হয় এবং এর খাঁটি সুবাস, কোমলতা ও উন্নত মানের জন্য বিশেষভাবে নির্বাচিত হয়। বাংলার অন্যতম জনপ্রিয় এই চালের জাতটি খিচুড়ি, পায়েস ও পোলাওয়ের মতো ঐতিহ্যবাহী খাবার তৈরির জন্য আদর্শ; এমনকি দুর্গাপূজা ও বিভিন্ন উৎসব-পার্বণে দেবতাকে নিবেদিত 'প্রসাদ' হিসেবেও এটি ব্যবহৃত হয়। 'গোবিন্দজী'-র ভোগের প্রধান উপকরণ হিসেবে ব্যবহারের কারণেই এর এমন নামকরণ হয়েছে। এছাড়া, উৎসবের আমেজ এবং তৃপ্তিদায়ক খাবারের সাথেও এই চালের গভীর সংযোগ রয়েছে।",
-      price: "৮৫",
-      quantity: "১ কেজি",
-      img: "/Premium Nazirshail Rice.webp",
-    },
-    {
-      id: 2,
-      name: "মিনিকেট চাল (নতুন)",
-      description:
-        "উন্নত মানের মিনিকেট চাল যা প্রতিদিনের ব্যবহারের জন্য আদর্শ।",
-      price: "৭২",
-      quantity: "১ কেজি",
-      img: "/hero.png",
-    },
-    {
-      id: 3,
-      name: "মিনিকেট চাল (নতুন)",
-      description:
-        "উন্নত মানের মিনিকেট চাল যা প্রতিদিনের ব্যবহারের জন্য আদর্শ।",
-      price: "৭২",
-      quantity: "১ কেজি",
-      img: "/hero.png",
-    },
-    {
-      id: 4,
-      name: "মিনিকেট চাল (নতুন)",
-      description:
-        "উন্নত মানের মিনিকেট চাল যা প্রতিদিনের ব্যবহারের জন্য আদর্শ।",
-      price: "৭২",
-      quantity: "১ কেজি",
-      img: "/hero.png",
-    },
-    {
-      id: 5,
-      name: "মিনিকেট চাল (নতুন)",
-      description:
-        "উন্নত মানের মিনিকেট চাল যা প্রতিদিনের ব্যবহারের জন্য আদর্শ।",
-      price: "৭২",
-      quantity: "১ কেজি",
-      img: "/hero.png",
-    },
-    {
-      id: 6,
-      name: "মিনিকেট চাল (নতুন)",
-      description:
-        "উন্নত মানের মিনিকেট চাল যা প্রতিদিনের ব্যবহারের জন্য আদর্শ।",
-      price: "৭২",
-      quantity: "১ কেজি",
-      img: "/hero.png",
-    },
-  ],
-
-  মধু: [
-    {
-      id: 3,
-      name: "সুন্দরবনের খাঁটি মধু",
-      description: "সুন্দরবন থেকে সংগৃহীত শতভাগ খাঁটি প্রাকৃতিক মধু।",
-      price: "৮৫০",
-      quantity: "১ কেজি",
-      img: "/hero.png",
-    },
-  ],
-};
+export const productsData: Product[] = [
+  {
+    id: 1,
+    categoryId: "rice",
+    img: "/images/gobindobhog.jpg",
+  },
+  {
+    id: 2,
+    categoryId: "rice",
+    img: "/images/dudheswar.jpg",
+  },
+  {
+    id: 3,
+    categoryId: "rice",
+    img: "/images/tulaipanji.jpg",
+  },
+  {
+    id: 4,
+    categoryId: "rice",
+    img: "/images/kalijeera.jpg",
+  },
+  {
+    id: 5,
+    categoryId: "lentils",
+    img: "/images/moong.jpg",
+  },
+  {
+    id: 6,
+    categoryId: "lentils",
+    img: "/images/bhaja_kolai.jpg",
+  },
+  {
+    id: 7,
+    categoryId: "oilandghee",
+    img: "/images/mustard.jpg",
+  },
+  {
+    id: 8,
+    categoryId: "oilandghee",
+    img: "/images/ghee.jpg",
+  },
+  {
+    id: 9,
+    categoryId: "honey",
+    img: "/images/honey.jpg",
+  },
+  {
+    id: 10,
+    categoryId: "pickleandkasundi",
+    img: "/images/kasundi.jpg",
+  },
+  {
+    id: 11,
+    categoryId: "pickleandkasundi",
+    img: "/images/pickel_mango.jpg",
+  },
+  {
+    id: 12,
+    categoryId: "sweetsandmorrobba",
+    img: "/images/morobba.jpg",
+  },
+  {
+    id: 13,
+    categoryId: "sweetsandmorrobba",
+    img: "/images/sandesh.jpg",
+  },
+  {
+    id: 14,
+    categoryId: "sweetsandmorrobba",
+    img: "/images/rasogolla.png",
+  },
+];

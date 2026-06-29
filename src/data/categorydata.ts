@@ -1,7 +1,7 @@
 export const masterCategories = [
   {
     title: "খাদ্যসামগ্রী ",
-    children: ["ধান ও চাল", "ডাল", "তেল", "আচার", "কাসুন্দি", "মিষ্টি"],
+    children: ["ধান ও চাল", "ডাল", "তেল ও ঘি", "মধু", "আচার ও কাসুন্দি", "মিষ্টি ও মোরব্বা"],
   },
   {
     title: "পোশাক ও বয়নসামগ্রী",
@@ -17,10 +17,8 @@ export const masterCategories = [
 export const categories = [
   { title: "ধান ও চাল" },
   { title: "ডাল" },
-  { title: "তেল" },
-  { title: "আচার" },
-  { title: "কাসুন্দি" },
-  { title: "মিষ্টি" },
-  { title: "শাড়ি" },
-  { title: "বাসনপত্র" },
+  { title: "তেল ও ঘি" },
+  { title: "মধু" },
+  { title: "আচার ও কাসুন্দি" },
+  { title: "মিষ্টি ও মোরব্বা" },
 ];
