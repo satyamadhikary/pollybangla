@@ -22,13 +22,9 @@ type ProductWithCategory = Product & {
   img: string;
 };
 
-// Returns a normalized variant list for any product.
-// If the product defines `variants`, use those directly.
-// Otherwise, fall back to a single variant built from its own price/quantity,
-// so products that haven't been migrated to the variants array still work.
 function getVariants(product: Product): ProductVariant[] {
   if (product.variants && product.variants.length > 0) {
-    return product.variants;
+    return product.variants as unknown as ProductVariant[];
   }
   return [{ quantity: product.quantity, price: product.price }];
 }
@@ -87,8 +83,10 @@ export default function Categories() {
 
   const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
   const masterCategories = t.categories.masters;
-  const productsData: Record<string, readonly Product[]> =
-    t.categories.products;
+  const productsData = t.categories.products as unknown as Record<
+    string,
+    readonly Product[]
+  >;
 
   const activeMaster =
     masterCategories.find((master) => master.id === activeMasterId) ?? null;
