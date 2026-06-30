@@ -9,7 +9,12 @@ export type Product = {
   img: string;
   price?: string;
   quantity?: string;
-  variants?: ProductVariant[];
+  variants?: readonly ProductVariant[];
+};
+
+type ProductWithCategory = Product & {
+  categoryId: string;
+  img: string;
 };
 
 export const productsData: Product[] = [
@@ -83,4 +88,24 @@ export const productsData: Product[] = [
     categoryId: "sweetsandmorrobba",
     img: "/images/rasogolla.png",
   },
+  {
+    id: 15,
+    categoryId: "drinksandantioxidants",
+    img: "/images/darjeeling_tea.jpg",
+  },
+  {
+    id: 16,
+    categoryId: "drinksandantioxidants",
+    img: "/images/ctc.png",
+  },
+  {
+    id: 17,
+    categoryId: "drinksandantioxidants",
+    img: "/images/herbal.jpg",
+  },
+  {
+    id: 18,
+    categoryId: "drinksandantioxidants",
+    img: "/images/blue_pea.jpg",
+  }
 ];

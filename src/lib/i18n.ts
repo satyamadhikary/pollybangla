@@ -88,14 +88,9 @@ export const translations = {
           ],
         },
         {
-          id: "textiles",
-          title: "পোশাক ও বয়নসামগ্রী",
-          children: [{ id: "saree", title: "শাড়ি" }],
-        },
-        {
-          id: "metal",
-          title: "ধাতব সামগ্রী",
-          children: [{ id: "utensils", title: "বাসনপত্র" }],
+          id: "drinks",
+          title: "এনার্জি ড্রিংকস ও অ্যান্টি-অক্সিডেন্ট",
+          children: [{ id: "tealeaves", title: "চা-পাতা" }],
         },
       ],
       products: {
@@ -302,6 +297,64 @@ export const translations = {
             ],
           },
         ],
+        tealeaves: [
+          {
+            id: 15,
+            name: "দার্জিলিং চা",
+            description:
+              "চায়ের শ্যাম্পেন নামে পরিচিত দার্জিলিং চা একটি প্রিমিয়াম এবং ভৌগোলিকভাবে সুরক্ষিত কালো চা (এবং কখনও কখনও সবুজ বা সাদা চা), যা ভারতের পশ্চিমবঙ্গের হিমালয়ের পাদদেশের উচ্চভূমিতে উৎপাদিত হয়। এর সূক্ষ্ম ফুলের সুবাস এবং স্বতন্ত্র মুসকাটেল স্বাদের জন্য এটি বিশ্বজুড়ে সমাদৃত।",
+            price: "350",
+            quantity: "100g",
+            variants: [
+              { quantity: "100g", price: "350" },
+              { quantity: "200g", price: "700" },
+              { quantity: "500g", price: "1750" },
+              { quantity: "1kg", price: "3500" },
+            ],
+          },
+          {
+            id: 16,
+            name: "আসাম সিটিসি",
+            description:
+              "পল্লী বাংলার ঐতিহ্য সম্ভার আসাম সিটিসি (ক্রাশ, টিয়ার, কার্ল) পরিচয় করিয়ে দিচ্ছে, যা প্রতিদিনের ভারতীয় চায়ের জন্য অন্যতম সেরা মানদণ্ড। যান্ত্রিক প্রক্রিয়ায় ছোট ও ঘন দানায় রূপান্তরিত এই চা থেকে তৈরি হয় গাঢ় ও মল্টি স্বাদের পানীয়, যা দুধ, চিনি এবং মশলার সঙ্গে অসাধারণভাবে মানিয়ে যায়। এতে ক্যাফেইনের পরিমাণ বেশি এবং এটি অ্যান্টিঅক্সিডেন্টে সমৃদ্ধ।",
+            price: "65",
+            quantity: "100g",
+            variants: [
+              { quantity: "100g", price: "65" },
+              { quantity: "200g", price: "130" },
+              { quantity: "500g", price: "325" },
+              { quantity: "1kg", price: "650" },
+            ],
+          },
+          {
+            id: 17,
+            name: "হারবাল চা",
+            description:
+              "পল্লী বাংলার ঐতিহ্য সম্ভার প্রিমিয়াম হারবাল চা পরিচয় করিয়ে দিচ্ছে। এটি শুকনো ভেষজ, ফুল, ফল, মশলা বা শিকড় গরম পানিতে ভিজিয়ে তৈরি করা একটি স্বাস্থ্যকর পানীয়। প্রচলিত চা (যেমন কালো বা সবুজ চা) থেকে ভিন্ন, এটি ক্যামেলিয়া সিনেনসিস উদ্ভিদ থেকে তৈরি নয় এবং স্বাভাবিকভাবেই ক্যাফেইনমুক্ত।",
+            price: "280",
+            quantity: "100g",
+            variants: [
+              { quantity: "100g", price: "280" },
+              { quantity: "200g", price: "560" },
+              { quantity: "500g", price: "1400" },
+              { quantity: "1kg", price: "2800" },
+            ],
+          },
+          {
+            id: 18,
+            name: "ব্লু পি",
+            description:
+              "পল্লী বাংলার ঐতিহ্য সম্ভার প্রিমিয়াম ব্লু পি পানীয় (যা বাটারফ্লাই পি বা অপরাজিতা নামেও পরিচিত) পরিচয় করিয়ে দিচ্ছে। এটি ক্লিটোরিয়া টার্নেটিয়া উদ্ভিদের পাপড়ি থেকে তৈরি একটি উজ্জ্বল ভেষজ পানীয়। এর প্রাকৃতিক নীলাভ বর্ণ এবং রঙ পরিবর্তনের অনন্য বৈশিষ্ট্যের জন্য এটি অত্যন্ত জনপ্রিয়। মাটির মতো স্বাদযুক্ত এই পানীয় অ্যান্টিঅক্সিডেন্টে সমৃদ্ধ এবং স্বাস্থ্যসচেতনদের কাছে বিশেষভাবে সমাদৃত।",
+            price: "499",
+            quantity: "100g",
+            variants: [
+              { quantity: "100g", price: "499" },
+              { quantity: "200g", price: "998" },
+              { quantity: "500g", price: "2495" },
+              { quantity: "1kg", price: "4990" },
+            ],
+          },
+        ],
       },
     },
     whyChoose: {
@@ -464,14 +517,9 @@ export const translations = {
           ],
         },
         {
-          id: "textiles",
-          title: "Clothing and Textiles",
-          children: [{ id: "saree", title: "Saree" }],
-        },
-        {
-          id: "metal",
-          title: "Metal Goods",
-          children: [{ id: "utensils", title: "Utensils" }],
+          id: "drinks",
+          title: "Energy Drinks and Anti-oxidants",
+          children: [{ id: "tealeaves", title: "Tea Leaves" }],
         },
       ],
       products: {
@@ -678,6 +726,64 @@ export const translations = {
             ],
           },
         ],
+        tealeaves: [
+          {
+            id: 15,
+            name: "Darjeeling Tea",
+            description:
+              "Renowned as the Champagne of Teas, Darjeeling tea is a premium, geographically protected black tea (and occasionally green or white) grown in the high-altitude foothills of the Himalayas in West Bengal, India. It is celebrated worldwide for its delicate floral notes and signature muscatel flavor.",
+            price: "350",
+            quantity: "100g",
+            variants: [
+              { quantity: "100g", price: "350" },
+              { quantity: "200g", price: "700" },
+              { quantity: "500g", price: "1750" },
+              { quantity: "1kg", price: "3500" },
+            ],
+          },
+          {
+            id: 16,
+            name: "Assam CTC",
+            description:
+              "Introducing Palli Banglar Oitihya Sambhar Assam CTC (Crush, Tear, Curl) is the gold standard for robust, everyday Indian chai. Processed mechanically into small, dense pellets, it yields a dark, malty brew that pairs perfectly with milk, sugar, and spices. It is highly caffeinated and rich in antioxidants.",
+            price: "65",
+            quantity: "100g",
+            variants: [
+              { quantity: "100g", price: "65" },
+              { quantity: "200g", price: "130" },
+              { quantity: "500g", price: "325" },
+              { quantity: "1kg", price: "650" },
+            ],
+          },
+          {
+            id: 17,
+            name: "Herbal Tea",
+            description:
+              "Introducing Palli Banglar Oitihya Sambhar Premium Herbal tea,  is a beverage made by steeping dried herbs, flowers, fruits, spices, or roots in hot water. Unlike traditional teas (like black or green tea), it is not derived from the Camellia sinensis plant and is naturally caffeine-free.",
+            price: "280",
+            quantity: "100g",
+            variants: [
+              { quantity: "100g", price: "280" },
+              { quantity: "200g", price: "560" },
+              { quantity: "500g", price: "1400" },
+              { quantity: "1kg", price: "2800" },
+            ],
+          },
+          {
+            id: 18,
+            name: "Blue Pea",
+            description:
+              "Introducing Palli Banglar Oitihya Sambhar Premium Blue pea drink (also known as butterfly pea or Aparajita) is a vibrant herbal infusion made from the petals of the Clitoria ternatea plant. Famous for its striking natural indigo hue and magical color-changing properties, it offers an earthy taste and is highly prized for its antioxidant content.",
+            price: "499",
+            quantity: "100g",
+            variants: [
+              { quantity: "100g", price: "499" },
+              { quantity: "200g", price: "998" },
+              { quantity: "500g", price: "2495" },
+              { quantity: "1kg", price: "4990" },
+            ],
+          },
+        ],
       },
     },
     whyChoose: {
@@ -841,14 +947,9 @@ export const translations = {
           ],
         },
         {
-          id: "textiles",
-          title: "कपड़े और वस्त्र",
-          children: [{ id: "saree", title: "साड़ी" }],
-        },
-        {
-          id: "metal",
-          title: "धातु सामग्री",
-          children: [{ id: "utensils", title: "बर्तन" }],
+          id: "drinks",
+          title: "एनर्जी ड्रिंक्स और एंटीऑक्सीडेंट्स",
+          children: [{ id: "tealeaves", title: "चाय पत्ती" }],
         },
       ],
       products: {
@@ -859,12 +960,12 @@ export const translations = {
             description:
               "सावधानीपूर्वक चुना गया हमारा गोविंदभोग चावल अपनी विशिष्ट सुगंध, मुलायम बनावट और उत्कृष्ट स्वाद के लिए प्रसिद्ध है। पल्ली बांग्लार ओइतिह्य संभार प्रीमियम गोविंदभोग चावल विश्वसनीय किसानों से प्राप्त किया जाता है और इसकी प्रामाणिक खुशबू, नरम बनावट तथा उच्च गुणवत्ता के लिए चुना जाता है। यह बंगाल की सबसे प्रिय पारंपरिक चावल किस्मों में से एक है और खिचड़ी, पायेश, पुलाव, दुर्गा पूजा के प्रसाद तथा अन्य उत्सवों के व्यंजनों के लिए आदर्श है। इसका नाम भगवान गोविंदजी को अर्पित भोग में इसके उपयोग से जुड़ा हुआ है।",
             price: "120",
-            quantity: "1 किग्रा",
+            quantity: "1 किलो ",
             variants: [
-              { quantity: "1 किग्रा", price: "120" },
-              { quantity: "2 किग्रा", price: "240" },
-              { quantity: "5 किग्रा", price: "600" },
-              { quantity: "10 किग्रा", price: "1200" },
+              { quantity: "1 किलो ", price: "120" },
+              { quantity: "2 किलो ", price: "240" },
+              { quantity: "5 किलो ", price: "600" },
+              { quantity: "10 किलो ", price: "1200" },
             ],
           },
           {
@@ -873,12 +974,12 @@ export const translations = {
             description:
               "पल्ली बांग्लार ओइतिह्य संभार प्रीमियम दूधेश्वर चावल। यह मुलायम और स्वादिष्ट चावल अपने महीन दानों और सुखद सुगंध के लिए जाना जाता है। दूधेश्वर चावल रोज़मर्रा के भोजन को यादगार अनुभव में बदल देता है। इसे विश्वसनीय किसान समुदायों से प्राप्त कर सर्वोत्तम गुणवत्ता, ताजगी और स्वाद के मानकों के अनुसार चुना जाता है।",
             price: "65",
-            quantity: "1 किग्रा",
+            quantity: "1 किलो ",
             variants: [
-              { quantity: "1 किग्रा", price: "65" },
-              { quantity: "2 किग्रा", price: "130" },
-              { quantity: "5 किग्रा", price: "325" },
-              { quantity: "10 किग्रा", price: "650" },
+              { quantity: "1 किलो ", price: "65" },
+              { quantity: "2 किलो ", price: "130" },
+              { quantity: "5 किलो ", price: "325" },
+              { quantity: "10 किलो ", price: "650" },
             ],
           },
           {
@@ -887,12 +988,12 @@ export const translations = {
             description:
               "उत्तर बंगाल की शाही सुगंध। पल्ली बांग्लार ओइतिह्य संभार प्रीमियम तुलाइपांजी चावल अपनी नाज़ुक खुशबू, पतले दानों और उत्कृष्ट स्वाद के लिए प्रसिद्ध है। यह बंगाल की सबसे मूल्यवान पारंपरिक चावल किस्मों में से एक है। ऐसा चावल घर लाएँ जो हर भोजन को एक विशेष अवसर बना दे।",
             price: "220",
-            quantity: "1 किग्रा",
+            quantity: "1 किलो ",
             variants: [
-              { quantity: "1 किग्रा", price: "220" },
-              { quantity: "2 किग्रा", price: "440" },
-              { quantity: "5 किग्रा", price: "1100" },
-              { quantity: "10 किग्रा", price: "2200" },
+              { quantity: "1 किलो ", price: "220" },
+              { quantity: "2 किलो ", price: "440" },
+              { quantity: "5 किलो ", price: "1100" },
+              { quantity: "10 किलो ", price: "2200" },
             ],
           },
           {
@@ -901,12 +1002,12 @@ export const translations = {
             description:
               "पल्ली बांग्लार ओइतिह्य संभार प्रीमियम कालिजीरा (चिनीगुरा) चावल एक उत्कृष्ट सुगंधित विरासत चावल है, जो अपने छोटे, पतले दानों और गहरी मीठी-मेवेदार खुशबू के लिए प्रसिद्ध है। इसे अक्सर 'चावलों का राजकुमार' या 'बेबी बासमती' कहा जाता है। यह पारंपरिक चावल ओडिशा और पश्चिम बंगाल की समृद्ध कृषि विरासत का हिस्सा है।",
             price: "130",
-            quantity: "1 किग्रा",
+            quantity: "1 किलो ",
             variants: [
-              { quantity: "1 किग्रा", price: "130" },
-              { quantity: "2 किग्रा", price: "260" },
-              { quantity: "5 किग्रा", price: "650" },
-              { quantity: "10 किग्रा", price: "1300" },
+              { quantity: "1 किलो ", price: "130" },
+              { quantity: "2 किलो ", price: "260" },
+              { quantity: "5 किलो ", price: "650" },
+              { quantity: "10 किलो ", price: "1300" },
             ],
           },
         ],
@@ -917,12 +1018,12 @@ export const translations = {
             description:
               "सोना मूंग दाल - हर कटोरे में सुनहरी पौष्टिकता। प्रस्तुत है पल्ली बांग्लार ओइतिह्य संभार प्रीमियम सोना मूंग दाल। सावधानीपूर्वक चुनी गई, प्राकृतिक स्वाद से भरपूर और पूरे भारत की रसोइयों में पसंद की जाने वाली यह दाल हर भोजन में पौष्टिकता, शुद्ध स्वाद और पारंपरिक घरेलू भोजन का आनंद लेकर आती है।",
             price: "260",
-            quantity: "1 किग्रा",
+            quantity: "1 किलो ",
             variants: [
-              { quantity: "1 किग्रा", price: "260" },
-              { quantity: "2 किग्रा", price: "520" },
-              { quantity: "5 किग्रा", price: "1300" },
-              { quantity: "10 किग्रा", price: "2600" },
+              { quantity: "1 किलो ", price: "260" },
+              { quantity: "2 किलो ", price: "520" },
+              { quantity: "5 किलो ", price: "1300" },
+              { quantity: "10 किलो ", price: "2600" },
             ],
           },
           {
@@ -931,12 +1032,12 @@ export const translations = {
             description:
               "पल्ली बांग्लार ओइतिह्य संभार प्रीमियम बेउली कलाइ दाल। बंगाली रसोई की एक प्रिय पारंपरिक दाल, हमारी बेउली कलाइ दाल को उसके प्रामाणिक स्वाद, समृद्ध बनावट और घर के बने भोजन की सुकूनभरी अनुभूति के लिए सावधानीपूर्वक चुना जाता है। हमारा मानना है कि उत्कृष्ट भोजन की शुरुआत उच्च गुणवत्ता वाली सामग्री से होती है। इसलिए हमारी बेउली कलाइ दाल विश्वसनीय किसानों से प्राप्त की जाती है, सावधानीपूर्वक संसाधित की जाती है और ताजगी, शुद्धता तथा निरंतर गुणवत्ता सुनिश्चित करने के लिए विशेष देखभाल के साथ पैक की जाती है।",
             price: "300",
-            quantity: "1 किग्रा",
+            quantity: "1 किलो ",
             variants: [
-              { quantity: "1 किग्रा", price: "300" },
-              { quantity: "2 किग्रा", price: "600" },
-              { quantity: "5 किग्रा", price: "1500" },
-              { quantity: "10 किग्रा", price: "3000" },
+              { quantity: "1 किलो ", price: "300" },
+              { quantity: "2 किलो ", price: "600" },
+              { quantity: "5 किलो ", price: "1500" },
+              { quantity: "10 किलो ", price: "3000" },
             ],
           },
         ],
@@ -961,12 +1062,12 @@ export const translations = {
             description:
               "शुद्ध गाय का घी - पारंपरिक तरीके से तैयार पोषण का खजाना। प्रस्तुत है पल्ली बांग्लार ओइतिह्य संभार गाय का घी, जो उच्च गुणवत्ता वाले गाय के दूध से बनाया जाता है और सावधानीपूर्वक तैयार किया जाता है ताकि आपके परिवार को प्रामाणिक स्वाद, समृद्ध सुगंध और भरपूर पोषण मिल सके।",
             price: "525",
-            quantity: "1 किग्रा",
+            quantity: "1 किलो ",
             variants: [
-              { quantity: "1 किग्रा", price: "525" },
-              { quantity: "2 किग्रा", price: "1050" },
-              { quantity: "5 किग्रा", price: "2625" },
-              { quantity: "10 किग्रा", price: "5250" },
+              { quantity: "1 किलो ", price: "525" },
+              { quantity: "2 किलो ", price: "1050" },
+              { quantity: "5 किलो ", price: "2625" },
+              { quantity: "10 किलो ", price: "5250" },
             ],
           },
         ],
@@ -1052,6 +1153,64 @@ export const translations = {
               { quantity: "100 पीस (10 प्रति पीस)", price: "1000" },
               { quantity: "100 पीस (15 प्रति पीस)", price: "1500" },
               { quantity: "100 पीस (20 प्रति पीस)", price: "2000" },
+            ],
+          },
+        ],
+        tealeaves: [
+          {
+            id: 15,
+            name: "दार्जिलिंग चाय",
+            description:
+              "चाय की शैम्पेन के रूप में प्रसिद्ध दार्जिलिंग चाय एक प्रीमियम और भौगोलिक संकेतक (GI) से संरक्षित काली चाय है (कभी-कभी हरी या सफेद चाय भी), जो भारत के पश्चिम बंगाल में हिमालय की तलहटी के ऊँचे क्षेत्रों में उगाई जाती है। यह अपनी नाजुक पुष्प सुगंध और विशिष्ट मस्कटेल स्वाद के लिए विश्वभर में प्रसिद्ध है।",
+            price: "350",
+            quantity: "100 ग्राम",
+            variants: [
+              { quantity: "100 ग्राम", price: "350" },
+              { quantity: "200 ग्राम", price: "700" },
+              { quantity: "500 ग्राम", price: "1750" },
+              { quantity: "1 किलो", price: "3500" },
+            ],
+          },
+          {
+            id: 16,
+            name: "असम सीटीसी",
+            description:
+              "प्रस्तुत है पल्ली बांग्लार ओइतिह्य संभार असम सीटीसी (क्रश, टियर, कर्ल), जो रोज़मर्रा की भारतीय चाय के लिए स्वर्ण मानक माना जाता है। यांत्रिक प्रक्रिया से छोटे और घने दानों में तैयार की गई यह चाय गहरे रंग और माल्टयुक्त स्वाद वाली चाय बनाती है, जो दूध, चीनी और मसालों के साथ बेहतरीन मेल खाती है। इसमें कैफीन की मात्रा अधिक होती है और यह एंटीऑक्सीडेंट से भरपूर होती है।",
+            price: "65",
+            quantity: "100 ग्राम",
+            variants: [
+              { quantity: "100 ग्राम", price: "65" },
+              { quantity: "200 ग्राम", price: "130" },
+              { quantity: "500 ग्राम", price: "325" },
+              { quantity: "1 किलो", price: "650" },
+            ],
+          },
+          {
+            id: 17,
+            name: "हर्बल चाय",
+            description:
+              "प्रस्तुत है पल्ली बांग्लार ओइतिह्य संभार प्रीमियम हर्बल चाय। यह सूखी जड़ी-बूटियों, फूलों, फलों, मसालों या जड़ों को गर्म पानी में डालकर तैयार किया जाने वाला एक स्वास्थ्यवर्धक पेय है। पारंपरिक चाय (जैसे काली या हरी चाय) के विपरीत, यह कैमेलिया साइनेंसिस पौधे से नहीं बनाई जाती और स्वाभाविक रूप से कैफीन-मुक्त होती है।",
+            price: "280",
+            quantity: "100 ग्राम",
+            variants: [
+              { quantity: "100 ग्राम", price: "280" },
+              { quantity: "200 ग्राम", price: "560" },
+              { quantity: "500 ग्राम", price: "1400" },
+              { quantity: "1 किलो", price: "2800" },
+            ],
+          },
+          {
+            id: 18,
+            name: "ब्लू पी",
+            description:
+              "प्रस्तुत है पल्ली बांग्लार ओइतिह्य संभार प्रीमियम ब्लू पी पेय (जिसे बटरफ्लाई पी या अपराजिता भी कहा जाता है)। यह क्लिटोरिया टरनेटिया पौधे की पंखुड़ियों से तैयार किया गया एक आकर्षक हर्बल पेय है। अपने प्राकृतिक गहरे नीले रंग और रंग बदलने की अद्भुत विशेषता के लिए प्रसिद्ध, इसका स्वाद हल्का मिट्टी जैसा होता है और यह एंटीऑक्सीडेंट से भरपूर माना जाता है।",
+            price: "499",
+            quantity: "100 ग्राम",
+            variants: [
+              { quantity: "100 ग्राम", price: "499" },
+              { quantity: "200 ग्राम", price: "998" },
+              { quantity: "500 ग्राम", price: "2495" },
+              { quantity: "1 किलो", price: "4990" },
             ],
           },
         ],
