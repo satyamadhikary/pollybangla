@@ -14,7 +14,7 @@ export default function Footer() {
           <div className="col-span-1">
             <div className="flex gap-3 items-center">
               <Image
-                src="/logo.png"
+                src="/footerlogo.png"
                 alt="logo"
                 width={100}
                 height={100}
@@ -36,9 +36,9 @@ export default function Footer() {
                 {t.footer.quickLinks}
               </h3>
 
-              <div className="flex flex-col gap-3 text-gray-300">
+              <div className="flex flex-col gap-3 text-gray-300 ">
                 {t.nav.map((item, index) => (
-                  <a key={index} href={item.href} className="text-left">
+                  <a key={index} href={item.href} className="text-left hover:text-white transition-colors hover:underline underline-offset-4">
                     {item.label}
                   </a>
                 ))}
@@ -50,10 +50,37 @@ export default function Footer() {
                 {t.footer.contact}
               </h3>
 
-              <div className="space-y-4 text-gray-300">
-                <p>{t.footer.address}</p>
-                <p>+91 9876543210</p>
-                <p>info@Pollibangla.com</p>
+              <div className="space-y-3 text-gray-300">
+                <p>
+                  <a
+                    href={`https://maps.app.goo.gl/h9v3buHQRYw2cZbT9`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-white transition-colors hover:underline underline-offset-4"
+                  >
+                    {t.footer.address}
+                  </a>
+                </p>
+                <p>
+                  <a
+                    href="tel:+919831927957"
+                    className="hover:text-white transition-colors hover:underline underline-offset-4"
+                    data-gtm-element="footer-phone-link"
+                    data-analytics-label="phone_click"
+                  >
+                    +91 98319 27957
+                  </a>
+                </p>
+                <p>
+                  <a
+                    href="mailto:amitdesign04@gmail.com"
+                    className="hover:text-white transition-colors hover:underline underline-offset-4"
+                    data-gtm-element="footer-email-link"
+                    data-analytics-label="email_click"
+                  >
+                    contact@Pollibangla.com
+                  </a>
+                </p>
               </div>
             </div>
 
@@ -62,7 +89,7 @@ export default function Footer() {
                 {t.footer.language}
               </h3>
 
-              <div className="space-y-4 text-gray-300">
+              <div className="space-y-3 text-gray-300">
                 <LanguageSwitcher />
               </div>
             </div>
