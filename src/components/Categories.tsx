@@ -94,9 +94,17 @@ export default function Categories() {
     (master) => master.id !== activeMasterId,
   );
   const currentSubCategories = activeMaster?.children ?? [];
-  const activeCategoryTitle =
-    currentSubCategories.find((category) => category.id === activeTabId)
-      ?.title ?? "";
+  const activeCategoryTitle = selectedProduct
+    ? (masterCategories
+        .flatMap(
+          (master) =>
+            master.children as ReadonlyArray<{ id: string; title: string }>,
+        )
+        .find((category) => category.id === selectedProduct.categoryId)
+        ?.title ?? "")
+    : ((
+        currentSubCategories as ReadonlyArray<{ id: string; title: string }>
+      ).find((category) => category.id === activeTabId)?.title ?? "");
 
   const defaultProducts = useMemo(
     () =>

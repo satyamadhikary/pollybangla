@@ -28,24 +28,32 @@ const I18nContext = createContext<I18nContextValue | null>(null);
 
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>(defaultLanguage);
+  const [isMounted, setIsMounted] = useState(false);
 
+  // 1. On initial client mount, read from localStorage and set state
   useEffect(() => {
-    const timeoutId = window.setTimeout(() => {
-      const storedLanguage = window.localStorage.getItem(STORAGE_KEY);
+    const storedLanguage = window.localStorage.getItem(STORAGE_KEY);
 
-      if (isLanguage(storedLanguage)) {
-        setLanguageState(storedLanguage);
-      }
-    }, 0);
+    if (isLanguage(storedLanguage)) {
+      setLanguageState(storedLanguage);
+      document.documentElement.lang = storedLanguage;
+      document.documentElement.dataset.language = storedLanguage;
+    } else {
+      document.documentElement.lang = defaultLanguage;
+      document.documentElement.dataset.language = defaultLanguage;
+    }
 
-    return () => window.clearTimeout(timeoutId);
+    setIsMounted(true);
   }, []);
 
+  // 2. Only write to localStorage AFTER initial mount has finished
   useEffect(() => {
+    if (!isMounted) return;
+
     document.documentElement.lang = language;
     document.documentElement.dataset.language = language;
     window.localStorage.setItem(STORAGE_KEY, language);
-  }, [language]);
+  }, [language, isMounted]);
 
   const value = useMemo<I18nContextValue>(
     () => ({
