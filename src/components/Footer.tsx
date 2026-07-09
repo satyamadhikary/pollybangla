@@ -73,12 +73,12 @@ export default function Footer() {
                 </p>
                 <p>
                   <a
-                    href="mailto:amitdesign04@gmail.com"
+                    href="mailto:contact@pallibanglaroitihyasambhar.in"
                     className="hover:text-white transition-colors hover:underline underline-offset-4"
                     data-gtm-element="footer-email-link"
                     data-analytics-label="email_click"
                   >
-                    contact@Pollibangla.com
+                    contact@pallibanglaroitihyasambhar.in
                   </a>
                 </p>
               </div>
